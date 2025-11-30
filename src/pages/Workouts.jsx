@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { addWorkout } from '../utils/api';
+import React, { useState, useEffect } from 'react';
+import { addWorkout, getWorkouts } from '../utils/api';
 
 const Workouts = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +11,26 @@ const Workouts = () => {
   });
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [workouts, setWorkouts] = useState([]);
+  const [loadingWorkouts, setLoadingWorkouts] = useState(true);
+
+  useEffect(() => {
+    fetchWorkouts();
+  }, []);
+
+  const fetchWorkouts = async () => {
+    try {
+      console.log('Fetching workouts...');
+      const data = await getWorkouts();
+      console.log('Workouts received:', data);
+      setWorkouts(data.workouts || []);
+    } catch (error) {
+      console.error('Error fetching workouts:', error);
+      setWorkouts([]);
+    } finally {
+      setLoadingWorkouts(false);
+    }
+  };
 
   const handleChange = (e) => {
     setFormData({
@@ -36,6 +56,9 @@ const Workouts = () => {
         sets: '',
         muscle: ''
       });
+
+      // Refresh workout list
+      fetchWorkouts();
     } catch (error) {
       setMessage(`Error: ${error.message}`);
     } finally {
@@ -151,6 +174,47 @@ const Workouts = () => {
           }}>
             {message}
           </p>
+        )}
+      </div>
+
+      <div style={{ marginTop: '40px' }}>
+        <h2>Workout History</h2>
+        {loadingWorkouts ? (
+          <p>Loading workouts...</p>
+        ) : workouts.length === 0 ? (
+          <p style={{ color: '#666' }}>No workouts recorded yet. Add your first workout above!</p>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', marginTop: '20px' }}>
+            {workouts.map((workout) => (
+              <div
+                key={workout.id}
+                style={{
+                  border: '1px solid #ddd',
+                  padding: '15px',
+                  borderRadius: '8px',
+                  backgroundColor: '#f9f9f9'
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+                  <h3 style={{ margin: 0, color: '#007bff' }}>{workout.exerciseName}</h3>
+                  <span style={{ fontSize: '12px', color: '#666' }}>
+                    {new Date(workout.createdAt).toLocaleDateString()}
+                  </span>
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '10px' }}>
+                  <div>
+                    <strong>Weight:</strong> {workout.weight} lbs
+                  </div>
+                  <div>
+                    <strong>Sets:</strong> {workout.sets} x {workout.reps}
+                  </div>
+                  <div>
+                    <strong>Muscle:</strong> {workout.muscle}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         )}
       </div>
     </div>

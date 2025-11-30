@@ -11,7 +11,7 @@ const getAuthToken = async () => {
   return await user.getIdToken();
 };
 
-// Add a workout
+// Workouts
 export const addWorkout = async (workoutData) => {
   const token = await getAuthToken();
 
@@ -32,7 +32,25 @@ export const addWorkout = async (workoutData) => {
   return await response.json();
 };
 
-// Add a food entry
+export const getWorkouts = async () => {
+  const token = await getAuthToken();
+
+  const response = await fetch(`${API_BASE_URL}/workouts`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Failed to fetch workouts');
+  }
+
+  return await response.json();
+};
+
+// Food
 export const addFood = async (foodData) => {
   const token = await getAuthToken();
 
@@ -48,6 +66,24 @@ export const addFood = async (foodData) => {
   if (!response.ok) {
     const error = await response.json();
     throw new Error(error.error || 'Failed to add food entry');
+  }
+
+  return await response.json();
+};
+
+export const getFoods = async () => {
+  const token = await getAuthToken();
+
+  const response = await fetch(`${API_BASE_URL}/food`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Failed to fetch food entries');
   }
 
   return await response.json();
