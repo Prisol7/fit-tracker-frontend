@@ -49,44 +49,177 @@ const Login = () => {
   };
 
   return (
-    <div style={{ padding: '20px', maxWidth: '400px', margin: '0 auto' }}>
-      <h1>{isRegister ? 'Register' : 'Login'}</h1>
+    <div className="page-content" style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      minHeight: 'calc(100vh - 200px)'
+    }}>
+      <div className="card" style={{
+        maxWidth: '450px',
+        width: '100%',
+        padding: '40px'
+      }}>
+        {/* Header with Icon */}
+        <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+          <div style={{
+            width: '80px',
+            height: '80px',
+            borderRadius: '50%',
+            backgroundColor: 'var(--primary-pink)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            margin: '0 auto 16px'
+          }}>
+            <i className="fas fa-dumbbell" style={{ fontSize: '2em', color: 'white' }}></i>
+          </div>
+          <h1 style={{ marginBottom: '8px' }}>{isRegister ? 'Create Account' : 'Welcome Back'}</h1>
+          <p>
+            {isRegister
+              ? 'Start your fitness journey today'
+              : 'Sign in to continue tracking your progress'}
+          </p>
+        </div>
 
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          style={{ padding: '8px' }}
-        />
+        {/* Tabs */}
+        <div style={{
+          display: 'flex',
+          gap: '8px',
+          marginBottom: '24px',
+          borderRadius: 'var(--border-radius-button)',
+          backgroundColor: 'var(--dark-surface)',
+          padding: '4px'
+        }}>
+          <button
+            onClick={() => setIsRegister(false)}
+            className={isRegister ? 'btn-outline' : 'btn-primary'}
+            style={{
+              flex: 1,
+              borderRadius: 'var(--border-radius-button)',
+              border: 'none'
+            }}
+          >
+            Login
+          </button>
+          <button
+            onClick={() => setIsRegister(true)}
+            className={isRegister ? 'btn-primary' : 'btn-outline'}
+            style={{
+              flex: 1,
+              borderRadius: 'var(--border-radius-button)',
+              border: 'none'
+            }}
+          >
+            Register
+          </button>
+        </div>
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          style={{ padding: '8px' }}
-        />
+        {/* Form */}
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <div>
+            <label style={{
+              display: 'block',
+              marginBottom: '8px',
+              fontWeight: '600',
+              color: 'var(--dark-text-primary)'
+            }}>
+              <i className="fas fa-envelope" style={{ marginRight: '8px', color: 'var(--primary-pink)' }}></i>
+              Email Address
+            </label>
+            <input
+              type="email"
+              placeholder="your@email.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
 
-        <button type="submit" style={{ padding: '10px', cursor: 'pointer' }}>
-          {isRegister ? 'Register' : 'Login'}
-        </button>
+          <div>
+            <label style={{
+              display: 'block',
+              marginBottom: '8px',
+              fontWeight: '600',
+              color: 'var(--dark-text-primary)'
+            }}>
+              <i className="fas fa-lock" style={{ marginRight: '8px', color: 'var(--primary-pink)' }}></i>
+              Password
+            </label>
+            <input
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
 
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-      </form>
+          {error && (
+            <div style={{
+              padding: '12px 16px',
+              backgroundColor: '#ffebee',
+              color: '#c62828',
+              borderRadius: 'var(--border-radius-input)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px'
+            }}>
+              <i className="fas fa-exclamation-circle"></i>
+              <span>{error}</span>
+            </div>
+          )}
 
-      <p style={{ marginTop: '20px' }}>
-        {isRegister ? 'Already have an account?' : "Don't have an account?"}
-        <button
-          onClick={() => setIsRegister(!isRegister)}
-          style={{ marginLeft: '5px', cursor: 'pointer', background: 'none', border: 'none', color: 'blue', textDecoration: 'underline' }}
-        >
-          {isRegister ? 'Login' : 'Register'}
-        </button>
-      </p>
+          <button
+            type="submit"
+            className="btn-primary"
+            style={{
+              width: '100%',
+              padding: '16px',
+              fontSize: '1.1em',
+              marginTop: '8px'
+            }}
+          >
+            <i className={`fas ${isRegister ? 'fa-user-plus' : 'fa-sign-in-alt'}`} style={{ marginRight: '8px' }}></i>
+            {isRegister ? 'Create Account' : 'Sign In'}
+          </button>
+        </form>
+
+        {/* Social Login Options (placeholder) */}
+        <div style={{ marginTop: '32px' }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '16px',
+            marginBottom: '20px'
+          }}>
+            <div style={{ flex: 1, height: '1px', backgroundColor: '#404040' }}></div>
+            <span style={{ color: 'var(--dark-text-secondary)', fontSize: '0.9em' }}>
+              Or continue with
+            </span>
+            <div style={{ flex: 1, height: '1px', backgroundColor: '#404040' }}></div>
+          </div>
+
+          <div style={{ display: 'flex', gap: '12px' }}>
+            <div
+          
+              className="btn-outline"
+              style={{
+                flex: 1,
+                padding: '12px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px'
+              }}
+            >
+              <i className="fab fa-apple" style={{ color: 'var(--primary-pink)' }}></i>
+              Coming Soon
+            </div>
+            
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

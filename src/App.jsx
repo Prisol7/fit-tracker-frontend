@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
@@ -11,24 +11,82 @@ import './App.css';
 
 const Navigation = () => {
   const { currentUser, logout } = useAuth();
+  const location = useLocation();
+
+  const isActive = (path) => location.pathname === path;
 
   return (
-    <nav style={{ padding: '10px', background: '#f0f0f0', marginBottom: '20px' }}>
-      <Link to="/" style={{ marginRight: '15px' }}>Home</Link>
+    <>
+      {/* Top Navigation */}
+      <nav className="top-nav">
+        <div className="logo">
+          <i className="fas fa-dumbbell"></i>
+          Fit Tracker
+        </div>
 
-      {currentUser ? (
-        <>
-          <Link to="/workouts" style={{ marginRight: '15px' }}>Workouts</Link>
-          <Link to="/food-tracker" style={{ marginRight: '15px' }}>Food Tracker</Link>
-          <Link to="/statistics" style={{ marginRight: '15px' }}>Statistics</Link>
-          <button onClick={logout} style={{ marginLeft: '15px', cursor: 'pointer' }}>
-            Logout
-          </button>
-        </>
-      ) : (
-        <Link to="/login">Login</Link>
+        {currentUser && (
+          <div className="nav-links">
+            <Link to="/workouts">
+              <i className="fas fa-dumbbell"></i> Workouts
+            </Link>
+            <Link to="/food-tracker">
+              <i className="fas fa-utensils"></i> Food
+            </Link>
+            <Link to="/statistics">
+              <i className="fas fa-chart-line"></i> Stats
+            </Link>
+          </div>
+        )}
+
+        <div className="auth-buttons">
+          {currentUser ? (
+            <button onClick={logout} className="btn-outline">
+              <i className="fas fa-sign-out-alt"></i> Logout
+            </button>
+          ) : (
+            <Link to="/login">
+              <button className="btn-primary">
+                <i className="fas fa-sign-in-alt"></i> Login
+              </button>
+            </Link>
+          )}
+        </div>
+      </nav>
+
+      {/* Bottom Navigation (Mobile) */}
+      {currentUser && (
+        <nav className="bottom-nav">
+          <Link
+            to="/"
+            className={`bottom-nav-item ${isActive('/') ? 'active' : ''}`}
+          >
+            <i className="fas fa-home"></i>
+            <span>Home</span>
+          </Link>
+          <Link
+            to="/workouts"
+            className={`bottom-nav-item ${isActive('/workouts') ? 'active' : ''}`}
+          >
+            <i className="fas fa-dumbbell"></i>
+            <span>Workouts</span>
+          </Link>
+          <Link
+            to="/food-tracker"
+            className={`bottom-nav-item ${isActive('/food-tracker') ? 'active' : ''}`}
+          >
+            <i className="fas fa-utensils"></i>
+            <span>Food</span>
+          </Link>
+          <Link
+            to="/statistics"
+            className={`bottom-nav-item ${isActive('/statistics') ? 'active' : ''}`}
+          >
+            <i className="fas fa-chart-line"></i>
+            <span>Stats</span>
+          </Link>
+        </nav>
       )}
-    </nav>
+    </>
   );
 };
 

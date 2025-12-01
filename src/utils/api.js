@@ -1,6 +1,6 @@
 import { auth } from '../firebase';
 
-const API_BASE_URL = 'http://localhost:3000/api';
+const API_BASE_URL = 'https://fitness-server-e2b1d5e67f36.herokuapp.com/api';
 
 // Get the current user's Firebase token
 const getAuthToken = async () => {

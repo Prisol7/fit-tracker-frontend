@@ -13,6 +13,7 @@ const Workouts = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [workouts, setWorkouts] = useState([]);
   const [loadingWorkouts, setLoadingWorkouts] = useState(true);
+  const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
     fetchWorkouts();
@@ -59,6 +60,7 @@ const Workouts = () => {
 
       // Refresh workout list
       fetchWorkouts();
+      setShowForm(false);
     } catch (error) {
       setMessage(`Error: ${error.message}`);
     } finally {
@@ -66,150 +68,300 @@ const Workouts = () => {
     }
   };
 
+  const muscleIcons = {
+    'Chest': 'fa-heart',
+    'Back': 'fa-shield-alt',
+    'Legs': 'fa-running',
+    'Shoulders': 'fa-user-shield',
+    'Arms': 'fa-hand-rock',
+    'Core': 'fa-medal'
+  };
+
+  const muscleColors = {
+    'Chest': 'var(--primary-pink)',
+    'Back': 'var(--secondary-blue)',
+    'Legs': 'var(--tertiary-mint)',
+    'Shoulders': 'var(--supporting-peach)',
+    'Arms': '#FFB6C1',
+    'Core': '#98D8C8'
+  };
+
   return (
-    <div style={{ padding: '20px', maxWidth: '600px', margin: '0 auto' }}>
-      <h1>Workouts</h1>
-      <p>Track your workouts here</p>
-
-      <div style={{ marginTop: '30px', border: '1px solid #ddd', padding: '20px', borderRadius: '8px' }}>
-        <h2>Add Workout</h2>
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-          <div>
-            <label style={{ display: 'block', marginBottom: '5px' }}>Exercise Name</label>
-            <input
-              type="text"
-              name="exerciseName"
-              value={formData.exerciseName}
-              onChange={handleChange}
-              required
-              placeholder="e.g., Bench Press"
-              style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
-            />
-          </div>
-
-          <div>
-            <label style={{ display: 'block', marginBottom: '5px' }}>Weight (lbs)</label>
-            <input
-              type="number"
-              name="weight"
-              value={formData.weight}
-              onChange={handleChange}
-              required
-              placeholder="e.g., 185"
-              style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
-            />
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-            <div>
-              <label style={{ display: 'block', marginBottom: '5px' }}>Reps</label>
-              <input
-                type="number"
-                name="reps"
-                value={formData.reps}
-                onChange={handleChange}
-                required
-                placeholder="e.g., 10"
-                style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
-              />
-            </div>
-
-            <div>
-              <label style={{ display: 'block', marginBottom: '5px' }}>Sets</label>
-              <input
-                type="number"
-                name="sets"
-                value={formData.sets}
-                onChange={handleChange}
-                required
-                placeholder="e.g., 3"
-                style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
-              />
-            </div>
-          </div>
-
-          <div>
-            <label style={{ display: 'block', marginBottom: '5px' }}>Muscle Group</label>
-            <select
-              name="muscle"
-              value={formData.muscle}
-              onChange={handleChange}
-              required
-              style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
-            >
-              <option value="">Select muscle group</option>
-              <option value="Chest">Chest</option>
-              <option value="Back">Back</option>
-              <option value="Legs">Legs</option>
-              <option value="Shoulders">Shoulders</option>
-              <option value="Arms">Arms</option>
-              <option value="Core">Core</option>
-            </select>
-          </div>
-
-          <button
-            type="submit"
-            disabled={isLoading}
-            style={{
-              padding: '12px',
-              backgroundColor: isLoading ? '#ccc' : '#007bff',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: isLoading ? 'not-allowed' : 'pointer',
-              fontSize: '16px'
-            }}
-          >
-            {isLoading ? 'Adding...' : 'Add Workout'}
-          </button>
-        </form>
-
-        {message && (
-          <p style={{
-            marginTop: '15px',
-            padding: '10px',
-            backgroundColor: message.startsWith('Error') ? '#ffebee' : '#e8f5e9',
-            color: message.startsWith('Error') ? '#c62828' : '#2e7d32',
-            borderRadius: '4px'
-          }}>
-            {message}
-          </p>
-        )}
+    <div className="page-content">
+      {/* Page Header */}
+      <div style={{ textAlign: 'center', marginBottom: '32px', marginTop: '20px' }}>
+        <h1 style={{ marginBottom: '12px' }}>
+          <i className="fas fa-dumbbell" style={{ color: 'var(--primary-pink)' }}></i> Workouts
+        </h1>
+        <p style={{ fontSize: '1.1em' }}>
+          Track your exercises and build strength
+        </p>
       </div>
 
-      <div style={{ marginTop: '40px' }}>
-        <h2>Workout History</h2>
+      {/* Floating Action Button */}
+      {!showForm && (
+        <button
+          onClick={() => setShowForm(true)}
+          className="btn-primary"
+          style={{
+            position: 'fixed',
+            bottom: '100px',
+            right: '32px',
+            width: '60px',
+            height: '60px',
+            borderRadius: '50%',
+            fontSize: '1.5em',
+            boxShadow: 'var(--shadow-heavy)',
+            zIndex: 50,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: 0
+          }}
+        >
+          <i className="fas fa-plus"></i>
+        </button>
+      )}
+
+      {/* Add Workout Form */}
+      {showForm && (
+        <div className="card" style={{ marginBottom: '32px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+            <h2 style={{ margin: 0 }}>
+              <i className="fas fa-plus-circle" style={{ color: 'var(--primary-pink)', marginRight: '8px' }}></i>
+              Add Workout
+            </h2>
+            <button
+              onClick={() => setShowForm(false)}
+              className="btn-icon"
+              style={{ fontSize: '1.2em' }}
+            >
+              <i className="fas fa-times"></i>
+            </button>
+          </div>
+
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <div>
+              <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+                <i className="fas fa-running" style={{ marginRight: '8px', color: 'var(--primary-pink)' }}></i>
+                Exercise Name
+              </label>
+              <input
+                type="text"
+                name="exerciseName"
+                value={formData.exerciseName}
+                onChange={handleChange}
+                required
+                placeholder="e.g., Bench Press"
+              />
+            </div>
+
+            <div>
+              <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+                <i className="fas fa-weight-hanging" style={{ marginRight: '8px', color: 'var(--primary-pink)' }}></i>
+                Weight (lbs)
+              </label>
+              <input
+                type="number"
+                name="weight"
+                value={formData.weight}
+                onChange={handleChange}
+                required
+                placeholder="e.g., 185"
+              />
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+              <div>
+                <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+                  <i className="fas fa-redo" style={{ marginRight: '8px', color: 'var(--secondary-blue)' }}></i>
+                  Reps
+                </label>
+                <input
+                  type="number"
+                  name="reps"
+                  value={formData.reps}
+                  onChange={handleChange}
+                  required
+                  placeholder="e.g., 10"
+                />
+              </div>
+
+              <div>
+                <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+                  <i className="fas fa-layer-group" style={{ marginRight: '8px', color: 'var(--secondary-blue)' }}></i>
+                  Sets
+                </label>
+                <input
+                  type="number"
+                  name="sets"
+                  value={formData.sets}
+                  onChange={handleChange}
+                  required
+                  placeholder="e.g., 3"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
+                <i className="fas fa-bullseye" style={{ marginRight: '8px', color: 'var(--tertiary-mint)' }}></i>
+                Muscle Group
+              </label>
+              <select
+                name="muscle"
+                value={formData.muscle}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Select muscle group</option>
+                <option value="Chest">💪 Chest</option>
+                <option value="Back">🛡️ Back</option>
+                <option value="Legs">🦵 Legs</option>
+                <option value="Shoulders">🏋️ Shoulders</option>
+                <option value="Arms">💪 Arms</option>
+                <option value="Core">🎯 Core</option>
+              </select>
+            </div>
+
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="btn-primary"
+              style={{
+                width: '100%',
+                padding: '16px',
+                fontSize: '1.1em',
+                marginTop: '8px'
+              }}
+            >
+              {isLoading ? (
+                <>
+                  <i className="fas fa-spinner fa-spin" style={{ marginRight: '8px' }}></i>
+                  Adding...
+                </>
+              ) : (
+                <>
+                  <i className="fas fa-check" style={{ marginRight: '8px' }}></i>
+                  Add Workout
+                </>
+              )}
+            </button>
+          </form>
+
+          {message && (
+            <div style={{
+              marginTop: '20px',
+              padding: '12px 16px',
+              backgroundColor: message.startsWith('Error') ? '#ffebee' : '#e8f5e9',
+              color: message.startsWith('Error') ? '#c62828' : '#2e7d32',
+              borderRadius: 'var(--border-radius-input)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px'
+            }}>
+              <i className={`fas ${message.startsWith('Error') ? 'fa-exclamation-circle' : 'fa-check-circle'}`}></i>
+              <span>{message}</span>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Workout History */}
+      <div>
+        <h2 style={{ marginBottom: '24px' }}>
+          <i className="fas fa-history" style={{ color: 'var(--secondary-blue)', marginRight: '8px' }}></i>
+          Workout History
+        </h2>
+
         {loadingWorkouts ? (
-          <p>Loading workouts...</p>
+          <div className="card" style={{ textAlign: 'center', padding: '40px' }}>
+            <i className="fas fa-spinner fa-spin" style={{ fontSize: '2em', color: 'var(--primary-pink)' }}></i>
+            <p style={{ marginTop: '16px' }}>Loading workouts...</p>
+          </div>
         ) : workouts.length === 0 ? (
-          <p style={{ color: '#666' }}>No workouts recorded yet. Add your first workout above!</p>
+          <div className="card" style={{ textAlign: 'center', padding: '40px' }}>
+            <i className="fas fa-dumbbell" style={{ fontSize: '3em', color: 'var(--light-text-secondary)', opacity: 0.3 }}></i>
+            <p style={{ marginTop: '16px', fontSize: '1.1em' }}>No workouts recorded yet</p>
+            <p>Click the + button to add your first workout!</p>
+          </div>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', marginTop: '20px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             {workouts.map((workout) => (
               <div
                 key={workout.id}
+                className="card"
                 style={{
-                  border: '1px solid #ddd',
-                  padding: '15px',
-                  borderRadius: '8px',
-                  backgroundColor: '#f9f9f9'
+                  borderLeft: `5px solid ${muscleColors[workout.muscle] || 'var(--primary-pink)'}`
                 }}
               >
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-                  <h3 style={{ margin: 0, color: '#007bff' }}>{workout.exerciseName}</h3>
-                  <span style={{ fontSize: '12px', color: '#666' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '16px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div style={{
+                      width: '48px',
+                      height: '48px',
+                      borderRadius: '50%',
+                      backgroundColor: muscleColors[workout.muscle] || 'var(--primary-pink)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}>
+                      <i className={`fas ${muscleIcons[workout.muscle] || 'fa-dumbbell'}`} style={{ fontSize: '1.3em', color: 'white' }}></i>
+                    </div>
+                    <div>
+                      <h3 style={{ margin: 0, marginBottom: '4px' }}>{workout.exerciseName}</h3>
+                      <span style={{
+                        fontSize: '0.85em',
+                        color: 'var(--light-text-secondary)',
+                        backgroundColor: 'var(--light-surface)',
+                        padding: '4px 12px',
+                        borderRadius: '12px'
+                      }}>
+                        {workout.muscle}
+                      </span>
+                    </div>
+                  </div>
+                  <span style={{ fontSize: '0.85em', color: 'var(--light-text-secondary)' }}>
+                    <i className="fas fa-calendar" style={{ marginRight: '4px' }}></i>
                     {new Date(workout.createdAt).toLocaleDateString()}
                   </span>
                 </div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '10px' }}>
-                  <div>
-                    <strong>Weight:</strong> {workout.weight} lbs
+
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(3, 1fr)',
+                  gap: '12px',
+                  marginTop: '16px'
+                }}>
+                  <div style={{
+                    textAlign: 'center',
+                    padding: '12px',
+                    backgroundColor: 'var(--light-surface)',
+                    borderRadius: 'var(--border-radius-element)'
+                  }}>
+                    <i className="fas fa-weight-hanging" style={{ color: 'var(--primary-pink)', marginBottom: '4px' }}></i>
+                    <div style={{ fontSize: '1.3em', fontWeight: '700', margin: '4px 0' }}>{workout.weight}</div>
+                    <div style={{ fontSize: '0.85em', color: 'var(--light-text-secondary)' }}>lbs</div>
                   </div>
-                  <div>
-                    <strong>Sets:</strong> {workout.sets} x {workout.reps}
+                  <div style={{
+                    textAlign: 'center',
+                    padding: '12px',
+                    backgroundColor: 'var(--light-surface)',
+                    borderRadius: 'var(--border-radius-element)'
+                  }}>
+                    <i className="fas fa-redo" style={{ color: 'var(--secondary-blue)', marginBottom: '4px' }}></i>
+                    <div style={{ fontSize: '1.3em', fontWeight: '700', margin: '4px 0' }}>{workout.sets} × {workout.reps}</div>
+                    <div style={{ fontSize: '0.85em', color: 'var(--light-text-secondary)' }}>sets × reps</div>
                   </div>
-                  <div>
-                    <strong>Muscle:</strong> {workout.muscle}
+                  <div style={{
+                    textAlign: 'center',
+                    padding: '12px',
+                    backgroundColor: 'var(--light-surface)',
+                    borderRadius: 'var(--border-radius-element)'
+                  }}>
+                    <i className="fas fa-calculator" style={{ color: 'var(--tertiary-mint)', marginBottom: '4px' }}></i>
+                    <div style={{ fontSize: '1.3em', fontWeight: '700', margin: '4px 0' }}>{workout.weight * workout.sets * workout.reps}</div>
+                    <div style={{ fontSize: '0.85em', color: 'var(--light-text-secondary)' }}>total lbs</div>
                   </div>
                 </div>
               </div>
