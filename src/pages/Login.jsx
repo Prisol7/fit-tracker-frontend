@@ -26,7 +26,7 @@ const Login = () => {
       const token = await userCredential.user.getIdToken();
 
       // Send credentials to backend
-      const response = await fetch('http://localhost:3000/api/auth/login', {
+      const response = await fetch('https://fitness-server-e2b1d5e67f36.herokuapp.com/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
