@@ -50,6 +50,44 @@ export const getWorkouts = async () => {
   return await response.json();
 };
 
+export const updateWorkout = async (id, workoutData) => {
+  const token = await getAuthToken();
+
+  const response = await fetch(`${API_BASE_URL}/workouts/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify(workoutData)
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Failed to update workout');
+  }
+
+  return await response.json();
+};
+
+export const deleteWorkout = async (id) => {
+  const token = await getAuthToken();
+
+  const response = await fetch(`${API_BASE_URL}/workouts/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Failed to delete workout');
+  }
+
+  return await response.json();
+};
+
 // Food
 export const addFood = async (foodData) => {
   const token = await getAuthToken();
@@ -84,6 +122,44 @@ export const getFoods = async () => {
   if (!response.ok) {
     const error = await response.json();
     throw new Error(error.error || 'Failed to fetch food entries');
+  }
+
+  return await response.json();
+};
+
+export const updateFood = async (id, foodData) => {
+  const token = await getAuthToken();
+
+  const response = await fetch(`${API_BASE_URL}/food/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify(foodData)
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Failed to update food entry');
+  }
+
+  return await response.json();
+};
+
+export const deleteFood = async (id) => {
+  const token = await getAuthToken();
+
+  const response = await fetch(`${API_BASE_URL}/food/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Failed to delete food entry');
   }
 
   return await response.json();

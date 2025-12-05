@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { addFood, getFoods } from '../utils/api';
+import { addFood, getFoods, updateFood, deleteFood } from '../utils/api';
 
 const FoodTracker = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +12,7 @@ const FoodTracker = () => {
   const [foods, setFoods] = useState([]);
   const [loadingFoods, setLoadingFoods] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [editingId, setEditingId] = useState(null);
 
   useEffect(() => {
     fetchFoods();
@@ -44,8 +45,14 @@ const FoodTracker = () => {
     setMessage('');
 
     try {
-      const result = await addFood(formData);
-      setMessage(`Success! Food entry added: ${formData.food}`);
+      if (editingId) {
+        await updateFood(editingId, formData);
+        setMessage(`Success! Food entry updated: ${formData.food}`);
+        setEditingId(null);
+      } else {
+        await addFood(formData);
+        setMessage(`Success! Food entry added: ${formData.food}`);
+      }
 
       // Reset form
       setFormData({
@@ -64,6 +71,42 @@ const FoodTracker = () => {
     }
   };
 
+  const handleEdit = (food) => {
+    setFormData({
+      food: food.food,
+      calories: food.calories.toString(),
+      protein: food.protein.toString()
+    });
+    setEditingId(food.id);
+    setShowForm(true);
+    setMessage('');
+  };
+
+  const handleDelete = async (id, foodName) => {
+    if (!window.confirm(`Are you sure you want to delete "${foodName}"?`)) {
+      return;
+    }
+
+    try {
+      await deleteFood(id);
+      setMessage(`Food entry deleted: ${foodName}`);
+      fetchFoods();
+    } catch (error) {
+      setMessage(`Error deleting food entry: ${error.message}`);
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setFormData({
+      food: '',
+      calories: '',
+      protein: ''
+    });
+    setEditingId(null);
+    setShowForm(false);
+    setMessage('');
+  };
+
   // Calculate daily totals
   const todayFoods = foods.filter(food => {
     const foodDate = new Date(food.createdAt);
@@ -79,7 +122,7 @@ const FoodTracker = () => {
       {/* Page Header */}
       <div style={{ textAlign: 'center', marginBottom: '32px', marginTop: '20px' }}>
         <h1 style={{ marginBottom: '12px' }}>
-          <i className="fas fa-utensils" style={{ color: 'var(--secondary-blue)' }}></i> Food Tracker
+          <i className="fas fa-utensils" style={{ color: 'var(--secondary-gold)' }}></i> Food Tracker
         </h1>
         <p style={{ fontSize: '1.1em' }}>
           Monitor your nutrition and stay on track
@@ -95,18 +138,18 @@ const FoodTracker = () => {
       }}>
         <div className="card" style={{
           textAlign: 'center',
-          borderTop: '4px solid var(--secondary-blue)'
+          borderTop: '4px solid var(--primary-red)'
         }}>
-          <i className="fas fa-fire" style={{ fontSize: '2em', color: 'var(--secondary-blue)', marginBottom: '8px' }}></i>
-          <h3 style={{ fontSize: '2em', margin: '8px 0', color: 'var(--secondary-blue)' }}>{totalCalories}</h3>
+          <i className="fas fa-fire" style={{ fontSize: '2em', color: 'var(--primary-red)', marginBottom: '8px' }}></i>
+          <h3 style={{ fontSize: '2em', margin: '8px 0', color: 'var(--primary-red)' }}>{totalCalories}</h3>
           <p style={{ fontSize: '0.9em' }}>Calories Today</p>
         </div>
         <div className="card" style={{
           textAlign: 'center',
-          borderTop: '4px solid var(--tertiary-mint)'
+          borderTop: '4px solid var(--secondary-gold)'
         }}>
-          <i className="fas fa-drumstick-bite" style={{ fontSize: '2em', color: 'var(--tertiary-mint)', marginBottom: '8px' }}></i>
-          <h3 style={{ fontSize: '2em', margin: '8px 0', color: 'var(--tertiary-mint)' }}>{totalProtein}g</h3>
+          <i className="fas fa-drumstick-bite" style={{ fontSize: '2em', color: 'var(--secondary-gold)', marginBottom: '8px' }}></i>
+          <h3 style={{ fontSize: '2em', margin: '8px 0', color: 'var(--secondary-gold)' }}>{totalProtein}g</h3>
           <p style={{ fontSize: '0.9em' }}>Protein Today</p>
         </div>
       </div>
@@ -129,8 +172,7 @@ const FoodTracker = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            padding: 0,
-            backgroundColor: 'var(--secondary-blue)'
+            padding: 0
           }}
         >
           <i className="fas fa-plus"></i>
@@ -142,11 +184,11 @@ const FoodTracker = () => {
         <div className="card" style={{ marginBottom: '32px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
             <h2 style={{ margin: 0 }}>
-              <i className="fas fa-plus-circle" style={{ color: 'var(--secondary-blue)', marginRight: '8px' }}></i>
-              Add Food Entry
+              <i className={`fas ${editingId ? 'fa-edit' : 'fa-plus-circle'}`} style={{ color: 'var(--secondary-gold)', marginRight: '8px' }}></i>
+              {editingId ? 'Edit Food Entry' : 'Add Food Entry'}
             </h2>
             <button
-              onClick={() => setShowForm(false)}
+              onClick={handleCancelEdit}
               className="btn-icon"
               style={{ fontSize: '1.2em' }}
             >
@@ -157,7 +199,7 @@ const FoodTracker = () => {
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <div>
               <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
-                <i className="fas fa-apple-alt" style={{ marginRight: '8px', color: 'var(--secondary-blue)' }}></i>
+                <i className="fas fa-apple-alt" style={{ marginRight: '8px', color: 'var(--secondary-gold)' }}></i>
                 Food Item
               </label>
               <input
@@ -173,7 +215,7 @@ const FoodTracker = () => {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
               <div>
                 <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
-                  <i className="fas fa-fire" style={{ marginRight: '8px', color: 'var(--primary-pink)' }}></i>
+                  <i className="fas fa-fire" style={{ marginRight: '8px', color: 'var(--primary-red)' }}></i>
                   Calories
                 </label>
                 <input
@@ -188,7 +230,7 @@ const FoodTracker = () => {
 
               <div>
                 <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
-                  <i className="fas fa-drumstick-bite" style={{ marginRight: '8px', color: 'var(--tertiary-mint)' }}></i>
+                  <i className="fas fa-drumstick-bite" style={{ marginRight: '8px', color: 'var(--tertiary-crimson)' }}></i>
                   Protein (g)
                 </label>
                 <input
@@ -210,19 +252,18 @@ const FoodTracker = () => {
                 width: '100%',
                 padding: '16px',
                 fontSize: '1.1em',
-                marginTop: '8px',
-                backgroundColor: 'var(--secondary-blue)'
+                marginTop: '8px'
               }}
             >
               {isLoading ? (
                 <>
                   <i className="fas fa-spinner fa-spin" style={{ marginRight: '8px' }}></i>
-                  Adding...
+                  {editingId ? 'Updating...' : 'Adding...'}
                 </>
               ) : (
                 <>
                   <i className="fas fa-check" style={{ marginRight: '8px' }}></i>
-                  Add Food Entry
+                  {editingId ? 'Update Food Entry' : 'Add Food Entry'}
                 </>
               )}
             </button>
@@ -249,13 +290,13 @@ const FoodTracker = () => {
       {/* Food History */}
       <div>
         <h2 style={{ marginBottom: '24px' }}>
-          <i className="fas fa-history" style={{ color: 'var(--secondary-blue)', marginRight: '8px' }}></i>
+          <i className="fas fa-history" style={{ color: 'var(--secondary-gold)', marginRight: '8px' }}></i>
           Food History
         </h2>
 
         {loadingFoods ? (
           <div className="card" style={{ textAlign: 'center', padding: '40px' }}>
-            <i className="fas fa-spinner fa-spin" style={{ fontSize: '2em', color: 'var(--secondary-blue)' }}></i>
+            <i className="fas fa-spinner fa-spin" style={{ fontSize: '2em', color: 'var(--secondary-gold)' }}></i>
             <p style={{ marginTop: '16px' }}>Loading food entries...</p>
           </div>
         ) : foods.length === 0 ? (
@@ -271,7 +312,7 @@ const FoodTracker = () => {
                 key={food.id}
                 className="card"
                 style={{
-                  borderLeft: '5px solid var(--secondary-blue)'
+                  borderLeft: '5px solid var(--secondary-gold)'
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '16px' }}>
@@ -280,19 +321,19 @@ const FoodTracker = () => {
                       width: '48px',
                       height: '48px',
                       borderRadius: '50%',
-                      backgroundColor: 'var(--secondary-blue)',
+                      backgroundColor: 'var(--secondary-gold)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center'
                     }}>
-                      <i className="fas fa-utensils" style={{ fontSize: '1.3em', color: 'white' }}></i>
+                      <i className="fas fa-utensils" style={{ fontSize: '1.3em', color: 'black' }}></i>
                     </div>
                     <div>
                       <h3 style={{ margin: 0, marginBottom: '4px' }}>{food.food}</h3>
                       <span style={{
                         fontSize: '0.85em',
-                        color: 'var(--light-text-secondary)',
-                        backgroundColor: 'var(--light-surface)',
+                        color: 'var(--dark-text-secondary)',
+                        backgroundColor: 'var(--dark-surface)',
                         padding: '4px 12px',
                         borderRadius: '12px'
                       }}>
@@ -301,10 +342,28 @@ const FoodTracker = () => {
                       </span>
                     </div>
                   </div>
-                  <span style={{ fontSize: '0.85em', color: 'var(--light-text-secondary)' }}>
-                    <i className="fas fa-calendar" style={{ marginRight: '4px' }}></i>
-                    {new Date(food.createdAt).toLocaleDateString()}
-                  </span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ fontSize: '0.85em', color: 'var(--light-text-secondary)', marginRight: '8px' }}>
+                      <i className="fas fa-calendar" style={{ marginRight: '4px' }}></i>
+                      {new Date(food.createdAt).toLocaleDateString()}
+                    </span>
+                    <button
+                      onClick={() => handleEdit(food)}
+                      className="btn-icon"
+                      title="Edit food entry"
+                      style={{ fontSize: '1em' }}
+                    >
+                      <i className="fas fa-edit"></i>
+                    </button>
+                    <button
+                      onClick={() => handleDelete(food.id, food.food)}
+                      className="btn-icon"
+                      title="Delete food entry"
+                      style={{ fontSize: '1em', color: '#d32f2f' }}
+                    >
+                      <i className="fas fa-trash"></i>
+                    </button>
+                  </div>
                 </div>
 
                 <div style={{
@@ -316,22 +375,22 @@ const FoodTracker = () => {
                   <div style={{
                     textAlign: 'center',
                     padding: '12px',
-                    backgroundColor: 'var(--light-surface)',
+                    backgroundColor: 'var(--dark-surface)',
                     borderRadius: 'var(--border-radius-element)'
                   }}>
-                    <i className="fas fa-fire" style={{ color: 'var(--primary-pink)', marginBottom: '4px' }}></i>
+                    <i className="fas fa-fire" style={{ color: 'var(--primary-red)', marginBottom: '4px' }}></i>
                     <div style={{ fontSize: '1.3em', fontWeight: '700', margin: '4px 0' }}>{food.calories}</div>
-                    <div style={{ fontSize: '0.85em', color: 'var(--light-text-secondary)' }}>calories</div>
+                    <div style={{ fontSize: '0.85em', color: 'var(--dark-text-secondary)' }}>calories</div>
                   </div>
                   <div style={{
                     textAlign: 'center',
                     padding: '12px',
-                    backgroundColor: 'var(--light-surface)',
+                    backgroundColor: 'var(--dark-surface)',
                     borderRadius: 'var(--border-radius-element)'
                   }}>
-                    <i className="fas fa-drumstick-bite" style={{ color: 'var(--tertiary-mint)', marginBottom: '4px' }}></i>
+                    <i className="fas fa-drumstick-bite" style={{ color: 'var(--tertiary-crimson)', marginBottom: '4px' }}></i>
                     <div style={{ fontSize: '1.3em', fontWeight: '700', margin: '4px 0' }}>{food.protein}g</div>
-                    <div style={{ fontSize: '0.85em', color: 'var(--light-text-secondary)' }}>protein</div>
+                    <div style={{ fontSize: '0.85em', color: 'var(--dark-text-secondary)' }}>protein</div>
                   </div>
                 </div>
               </div>

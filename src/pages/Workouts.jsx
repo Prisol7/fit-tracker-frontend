@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { addWorkout, getWorkouts } from '../utils/api';
+import { addWorkout, getWorkouts, updateWorkout, deleteWorkout } from '../utils/api';
 
 const Workouts = () => {
   const [formData, setFormData] = useState({
@@ -14,6 +14,7 @@ const Workouts = () => {
   const [workouts, setWorkouts] = useState([]);
   const [loadingWorkouts, setLoadingWorkouts] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [editingId, setEditingId] = useState(null);
 
   useEffect(() => {
     fetchWorkouts();
@@ -46,8 +47,14 @@ const Workouts = () => {
     setMessage('');
 
     try {
-      const result = await addWorkout(formData);
-      setMessage(`Success! Workout added: ${formData.exerciseName}`);
+      if (editingId) {
+        await updateWorkout(editingId, formData);
+        setMessage(`Success! Workout updated: ${formData.exerciseName}`);
+        setEditingId(null);
+      } else {
+        await addWorkout(formData);
+        setMessage(`Success! Workout added: ${formData.exerciseName}`);
+      }
 
       // Reset form
       setFormData({
@@ -68,6 +75,46 @@ const Workouts = () => {
     }
   };
 
+  const handleEdit = (workout) => {
+    setFormData({
+      exerciseName: workout.exerciseName,
+      weight: workout.weight.toString(),
+      reps: workout.reps.toString(),
+      sets: workout.sets.toString(),
+      muscle: workout.muscle
+    });
+    setEditingId(workout.id);
+    setShowForm(true);
+    setMessage('');
+  };
+
+  const handleDelete = async (id, exerciseName) => {
+    if (!window.confirm(`Are you sure you want to delete "${exerciseName}"?`)) {
+      return;
+    }
+
+    try {
+      await deleteWorkout(id);
+      setMessage(`Workout deleted: ${exerciseName}`);
+      fetchWorkouts();
+    } catch (error) {
+      setMessage(`Error deleting workout: ${error.message}`);
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setFormData({
+      exerciseName: '',
+      weight: '',
+      reps: '',
+      sets: '',
+      muscle: ''
+    });
+    setEditingId(null);
+    setShowForm(false);
+    setMessage('');
+  };
+
   const muscleIcons = {
     'Chest': 'fa-heart',
     'Back': 'fa-shield-alt',
@@ -78,12 +125,12 @@ const Workouts = () => {
   };
 
   const muscleColors = {
-    'Chest': 'var(--primary-pink)',
-    'Back': 'var(--secondary-blue)',
-    'Legs': 'var(--tertiary-mint)',
-    'Shoulders': 'var(--supporting-peach)',
-    'Arms': '#FFB6C1',
-    'Core': '#98D8C8'
+    'Chest': 'var(--primary-red)',
+    'Back': 'var(--secondary-gold)',
+    'Legs': 'var(--tertiary-crimson)',
+    'Shoulders': 'var(--supporting-bronze)',
+    'Arms': '#A52A2A',
+    'Core': '#8B7355'
   };
 
   return (
@@ -91,7 +138,7 @@ const Workouts = () => {
       {/* Page Header */}
       <div style={{ textAlign: 'center', marginBottom: '32px', marginTop: '20px' }}>
         <h1 style={{ marginBottom: '12px' }}>
-          <i className="fas fa-dumbbell" style={{ color: 'var(--primary-pink)' }}></i> Workouts
+          <i className="fas fa-dumbbell" style={{ color: 'var(--primary-red)' }}></i> Workouts
         </h1>
         <p style={{ fontSize: '1.1em' }}>
           Track your exercises and build strength
@@ -128,11 +175,11 @@ const Workouts = () => {
         <div className="card" style={{ marginBottom: '32px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
             <h2 style={{ margin: 0 }}>
-              <i className="fas fa-plus-circle" style={{ color: 'var(--primary-pink)', marginRight: '8px' }}></i>
-              Add Workout
+              <i className={`fas ${editingId ? 'fa-edit' : 'fa-plus-circle'}`} style={{ color: 'var(--secondary-gold)', marginRight: '8px' }}></i>
+              {editingId ? 'Edit Workout' : 'Add Workout'}
             </h2>
             <button
-              onClick={() => setShowForm(false)}
+              onClick={handleCancelEdit}
               className="btn-icon"
               style={{ fontSize: '1.2em' }}
             >
@@ -143,7 +190,7 @@ const Workouts = () => {
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <div>
               <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
-                <i className="fas fa-running" style={{ marginRight: '8px', color: 'var(--primary-pink)' }}></i>
+                <i className="fas fa-running" style={{ marginRight: '8px', color: 'var(--secondary-gold)' }}></i>
                 Exercise Name
               </label>
               <input
@@ -158,7 +205,7 @@ const Workouts = () => {
 
             <div>
               <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
-                <i className="fas fa-weight-hanging" style={{ marginRight: '8px', color: 'var(--primary-pink)' }}></i>
+                <i className="fas fa-weight-hanging" style={{ marginRight: '8px', color: 'var(--primary-red)' }}></i>
                 Weight (lbs)
               </label>
               <input
@@ -174,7 +221,7 @@ const Workouts = () => {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
               <div>
                 <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
-                  <i className="fas fa-redo" style={{ marginRight: '8px', color: 'var(--secondary-blue)' }}></i>
+                  <i className="fas fa-redo" style={{ marginRight: '8px', color: 'var(--tertiary-crimson)' }}></i>
                   Reps
                 </label>
                 <input
@@ -189,7 +236,7 @@ const Workouts = () => {
 
               <div>
                 <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
-                  <i className="fas fa-layer-group" style={{ marginRight: '8px', color: 'var(--secondary-blue)' }}></i>
+                  <i className="fas fa-layer-group" style={{ marginRight: '8px', color: 'var(--supporting-bronze)' }}></i>
                   Sets
                 </label>
                 <input
@@ -205,7 +252,7 @@ const Workouts = () => {
 
             <div>
               <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
-                <i className="fas fa-bullseye" style={{ marginRight: '8px', color: 'var(--tertiary-mint)' }}></i>
+                <i className="fas fa-bullseye" style={{ marginRight: '8px', color: 'var(--secondary-gold)' }}></i>
                 Muscle Group
               </label>
               <select
@@ -238,12 +285,12 @@ const Workouts = () => {
               {isLoading ? (
                 <>
                   <i className="fas fa-spinner fa-spin" style={{ marginRight: '8px' }}></i>
-                  Adding...
+                  {editingId ? 'Updating...' : 'Adding...'}
                 </>
               ) : (
                 <>
                   <i className="fas fa-check" style={{ marginRight: '8px' }}></i>
-                  Add Workout
+                  {editingId ? 'Update Workout' : 'Add Workout'}
                 </>
               )}
             </button>
@@ -270,13 +317,13 @@ const Workouts = () => {
       {/* Workout History */}
       <div>
         <h2 style={{ marginBottom: '24px' }}>
-          <i className="fas fa-history" style={{ color: 'var(--secondary-blue)', marginRight: '8px' }}></i>
+          <i className="fas fa-history" style={{ color: 'var(--secondary-gold)', marginRight: '8px' }}></i>
           Workout History
         </h2>
 
         {loadingWorkouts ? (
           <div className="card" style={{ textAlign: 'center', padding: '40px' }}>
-            <i className="fas fa-spinner fa-spin" style={{ fontSize: '2em', color: 'var(--primary-pink)' }}></i>
+            <i className="fas fa-spinner fa-spin" style={{ fontSize: '2em', color: 'var(--secondary-gold)' }}></i>
             <p style={{ marginTop: '16px' }}>Loading workouts...</p>
           </div>
         ) : workouts.length === 0 ? (
@@ -312,8 +359,8 @@ const Workouts = () => {
                       <h3 style={{ margin: 0, marginBottom: '4px' }}>{workout.exerciseName}</h3>
                       <span style={{
                         fontSize: '0.85em',
-                        color: 'var(--light-text-secondary)',
-                        backgroundColor: 'var(--light-surface)',
+                        color: 'var(--dark-text-secondary)',
+                        backgroundColor: 'var(--dark-surface)',
                         padding: '4px 12px',
                         borderRadius: '12px'
                       }}>
@@ -321,10 +368,28 @@ const Workouts = () => {
                       </span>
                     </div>
                   </div>
-                  <span style={{ fontSize: '0.85em', color: 'var(--light-text-secondary)' }}>
-                    <i className="fas fa-calendar" style={{ marginRight: '4px' }}></i>
-                    {new Date(workout.createdAt).toLocaleDateString()}
-                  </span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ fontSize: '0.85em', color: 'var(--light-text-secondary)', marginRight: '8px' }}>
+                      <i className="fas fa-calendar" style={{ marginRight: '4px' }}></i>
+                      {new Date(workout.createdAt).toLocaleDateString()}
+                    </span>
+                    <button
+                      onClick={() => handleEdit(workout)}
+                      className="btn-icon"
+                      title="Edit workout"
+                      style={{ fontSize: '1em' }}
+                    >
+                      <i className="fas fa-edit"></i>
+                    </button>
+                    <button
+                      onClick={() => handleDelete(workout.id, workout.exerciseName)}
+                      className="btn-icon"
+                      title="Delete workout"
+                      style={{ fontSize: '1em', color: '#d32f2f' }}
+                    >
+                      <i className="fas fa-trash"></i>
+                    </button>
+                  </div>
                 </div>
 
                 <div style={{
@@ -336,32 +401,32 @@ const Workouts = () => {
                   <div style={{
                     textAlign: 'center',
                     padding: '12px',
-                    backgroundColor: 'var(--light-surface)',
+                    backgroundColor: 'var(--dark-surface)',
                     borderRadius: 'var(--border-radius-element)'
                   }}>
-                    <i className="fas fa-weight-hanging" style={{ color: 'var(--primary-pink)', marginBottom: '4px' }}></i>
+                    <i className="fas fa-weight-hanging" style={{ color: 'var(--primary-red)', marginBottom: '4px' }}></i>
                     <div style={{ fontSize: '1.3em', fontWeight: '700', margin: '4px 0' }}>{workout.weight}</div>
-                    <div style={{ fontSize: '0.85em', color: 'var(--light-text-secondary)' }}>lbs</div>
+                    <div style={{ fontSize: '0.85em', color: 'var(--dark-text-secondary)' }}>lbs</div>
                   </div>
                   <div style={{
                     textAlign: 'center',
                     padding: '12px',
-                    backgroundColor: 'var(--light-surface)',
+                    backgroundColor: 'var(--dark-surface)',
                     borderRadius: 'var(--border-radius-element)'
                   }}>
-                    <i className="fas fa-redo" style={{ color: 'var(--secondary-blue)', marginBottom: '4px' }}></i>
+                    <i className="fas fa-redo" style={{ color: 'var(--secondary-gold)', marginBottom: '4px' }}></i>
                     <div style={{ fontSize: '1.3em', fontWeight: '700', margin: '4px 0' }}>{workout.sets} × {workout.reps}</div>
-                    <div style={{ fontSize: '0.85em', color: 'var(--light-text-secondary)' }}>sets × reps</div>
+                    <div style={{ fontSize: '0.85em', color: 'var(--dark-text-secondary)' }}>sets × reps</div>
                   </div>
                   <div style={{
                     textAlign: 'center',
                     padding: '12px',
-                    backgroundColor: 'var(--light-surface)',
+                    backgroundColor: 'var(--dark-surface)',
                     borderRadius: 'var(--border-radius-element)'
                   }}>
-                    <i className="fas fa-calculator" style={{ color: 'var(--tertiary-mint)', marginBottom: '4px' }}></i>
+                    <i className="fas fa-calculator" style={{ color: 'var(--tertiary-crimson)', marginBottom: '4px' }}></i>
                     <div style={{ fontSize: '1.3em', fontWeight: '700', margin: '4px 0' }}>{workout.weight * workout.sets * workout.reps}</div>
-                    <div style={{ fontSize: '0.85em', color: 'var(--light-text-secondary)' }}>total lbs</div>
+                    <div style={{ fontSize: '0.85em', color: 'var(--dark-text-secondary)' }}>total lbs</div>
                   </div>
                 </div>
               </div>

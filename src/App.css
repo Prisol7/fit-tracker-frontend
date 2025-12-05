@@ -23,10 +23,11 @@
 .top-nav .logo {
   font-size: 1.5em;
   font-weight: 700;
-  color: var(--primary-pink);
+  color: var(--secondary-gold);
   display: flex;
   align-items: center;
   gap: 8px;
+  text-shadow: 0 2px 4px rgba(139, 0, 0, 0.5);
 }
 
 .top-nav .nav-links {
@@ -46,7 +47,7 @@
 }
 
 .top-nav .nav-links a:hover {
-  color: var(--primary-pink);
+  color: var(--tertiary-crimson);
 }
 
 .top-nav .auth-buttons {
@@ -112,11 +113,11 @@
 }
 
 .bottom-nav-item.active {
-  color: var(--primary-pink);
+  color: var(--secondary-gold);
 }
 
 .bottom-nav-item:hover {
-  color: var(--primary-pink);
+  color: var(--secondary-gold);
   transform: translateY(-2px);
 }
 

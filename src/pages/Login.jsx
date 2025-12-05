@@ -13,18 +13,20 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-
+  
     try {
       let userCredential;
-
+  
       if (isRegister) {
         userCredential = await createUserWithEmailAndPassword(auth, email, password);
       } else {
         userCredential = await signInWithEmailAndPassword(auth, email, password);
       }
-
+  
       const token = await userCredential.user.getIdToken();
-
+  
+      console.log('Sending request to backend...'); // Debug
+  
       // Send credentials to backend
       const response = await fetch('https://fitness-server-e2b1d5e67f36.herokuapp.com/api/auth/login', {
         method: 'POST',
@@ -37,13 +39,19 @@ const Login = () => {
           token
         }),
       });
-
+  
+      console.log('Response status:', response.status); // Debug
+      const responseData = await response.json();
+      console.log('Response data:', responseData); // Debug
+  
       if (response.ok) {
         navigate('/workouts');
       } else {
-        setError('Failed to authenticate with backend');
+        // Show the actual error from backend
+        setError(responseData.details || responseData.error || 'Failed to authenticate with backend');
       }
     } catch (err) {
+      console.error('Login error:', err);
       setError(err.message);
     }
   };

@@ -1,18 +1,18 @@
-/* Cute but Efficient Minimalism Design System */
+/* Sleep Token Inspired Design System */
 
 :root {
-  /* Primary Colors */
-  --primary-pink: #FF85A2;
-  --secondary-blue: #A2D2FF;
-  --tertiary-mint: #B5EAD7;
-  --supporting-peach: #FFDAC1;
+  /* Primary Colors - Sleep Token Theme */
+  --primary-red: #8B0000;        /* Blood Red */
+  --secondary-gold: #C9A961;      /* Antiqued Gold */
+  --tertiary-crimson: #DC143C;    /* Crimson accent */
+  --supporting-bronze: #8B6914;   /* Dark gold/bronze */
 
-  /* Dark Theme Colors */
-  --dark-bg: #121212;
-  --dark-surface: #1E1E1E;
-  --dark-card: #252525;
-  --dark-text-primary: #E0E0E0;
-  --dark-text-secondary: #A0A0A0;
+  /* Dark Theme Colors - Deep Black Theme */
+  --dark-bg: #000000;             /* Pure black */
+  --dark-surface: #0A0A0A;        /* Almost black */
+  --dark-card: #151515;           /* Dark charcoal */
+  --dark-text-primary: #E8D7C3;   /* Warm off-white */
+  --dark-text-secondary: #8B7355; /* Muted gold-brown */
 
   /* Light Theme Colors */
   --light-bg: #FFFFFF;
@@ -21,10 +21,10 @@
   --light-text-primary: #2C3E50;
   --light-text-secondary: #6C757D;
 
-  /* Shadows */
-  --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.08);
-  --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.15);
-  --shadow-heavy: 0 4px 12px rgba(0, 0, 0, 0.25);
+  /* Shadows - Darker, more dramatic */
+  --shadow-light: 0 4px 12px rgba(139, 0, 0, 0.15);
+  --shadow-medium: 0 4px 16px rgba(139, 0, 0, 0.3);
+  --shadow-heavy: 0 8px 24px rgba(139, 0, 0, 0.5);
 
   /* Typography */
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -119,13 +119,13 @@ p {
 
 a {
   font-weight: 500;
-  color: var(--primary-pink);
+  color: var(--secondary-gold);
   text-decoration: none;
   transition: all 0.3s ease;
 }
 
 a:hover {
-  color: var(--secondary-blue);
+  color: var(--tertiary-crimson);
   transform: translateY(-2px);
 }
 
@@ -143,24 +143,27 @@ button {
 }
 
 button.btn-primary {
-  background-color: var(--primary-pink);
-  color: white;
+  background-color: var(--primary-red);
+  color: var(--secondary-gold);
+  font-weight: 700;
+  border: 1px solid var(--secondary-gold);
 }
 
 button.btn-primary:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-medium);
+  background-color: var(--tertiary-crimson);
 }
 
 button.btn-outline {
   background-color: transparent;
-  border: 2px solid var(--primary-pink);
-  color: var(--primary-pink);
+  border: 2px solid var(--secondary-gold);
+  color: var(--secondary-gold);
 }
 
 button.btn-outline:hover {
-  background-color: var(--primary-pink);
-  color: white;
+  background-color: var(--primary-red);
+  color: var(--secondary-gold);
   transform: translateY(-2px);
 }
 
@@ -187,14 +190,14 @@ button:disabled {
 
 button:focus,
 button:focus-visible {
-  outline: 2px solid var(--primary-pink);
+  outline: 2px solid var(--secondary-gold);
   outline-offset: 2px;
 }
 
 /* Input Styles */
 input, select, textarea {
   border-radius: var(--border-radius-input);
-  border: 2px solid #404040;
+  border: 2px solid #2A2A2A;
   padding: 12px 16px;
   font-size: 1em;
   font-family: inherit;
@@ -214,8 +217,8 @@ input, select, textarea {
 
 input:focus, select:focus, textarea:focus {
   outline: none;
-  border-color: var(--primary-pink);
-  box-shadow: 0 0 0 3px rgba(255, 133, 162, 0.1);
+  border-color: var(--secondary-gold);
+  box-shadow: 0 0 0 3px rgba(201, 169, 97, 0.2);
 }
 
 /* Card Styles */
