@@ -1,18 +1,20 @@
-/* Sleep Token Inspired Design System */
+/* Minimalistic Dark Theme with Red Accents & Gold Highlights */
 
 :root {
-  /* Primary Colors - Sleep Token Theme */
-  --primary-red: #8B0000;        /* Blood Red */
-  --secondary-gold: #C9A961;      /* Antiqued Gold */
-  --tertiary-crimson: #DC143C;    /* Crimson accent */
-  --supporting-bronze: #8B6914;   /* Dark gold/bronze */
+  /* Primary Colors - Minimalistic Dark Theme */
+  --primary-gold: #D4AF37;        /* Rich Gold for hover/active */
+  --accent-red: #5C0A0A;          /* Dark Red accent */
+  --highlight-red: #8B1A1A;       /* Slightly brighter red */
+  --border-red: #3D0808;          /* Subtle dark red borders */
 
-  /* Dark Theme Colors - Deep Black Theme */
-  --dark-bg: #000000;             /* Pure black */
-  --dark-surface: #0A0A0A;        /* Almost black */
-  --dark-card: #151515;           /* Dark charcoal */
-  --dark-text-primary: #E8D7C3;   /* Warm off-white */
-  --dark-text-secondary: #8B7355; /* Muted gold-brown */
+  /* Dark Theme Colors - Pure Minimalism */
+  --dark-bg: #0A0A0A;             /* Deep dark background */
+  --dark-surface: #121212;        /* Slightly elevated surface */
+  --dark-card: #1A1A1A;           /* Card background */
+  --dark-card-hover: #202020;     /* Card hover state */
+  --dark-text-primary: #E5E5E5;   /* Clean white text */
+  --dark-text-secondary: #999999; /* Muted gray text */
+  --dark-text-tertiary: #666666;  /* Very subtle text */
 
   /* Light Theme Colors */
   --light-bg: #FFFFFF;
@@ -21,10 +23,11 @@
   --light-text-primary: #2C3E50;
   --light-text-secondary: #6C757D;
 
-  /* Shadows - Darker, more dramatic */
-  --shadow-light: 0 4px 12px rgba(139, 0, 0, 0.15);
-  --shadow-medium: 0 4px 16px rgba(139, 0, 0, 0.3);
-  --shadow-heavy: 0 8px 24px rgba(139, 0, 0, 0.5);
+  /* Shadows - Subtle and minimal */
+  --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-heavy: 0 8px 24px rgba(0, 0, 0, 0.6);
+  --shadow-gold: 0 4px 20px rgba(212, 175, 55, 0.3);
 
   /* Typography */
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -119,13 +122,13 @@ p {
 
 a {
   font-weight: 500;
-  color: var(--secondary-gold);
+  color: var(--dark-text-primary);
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 a:hover {
-  color: var(--tertiary-crimson);
+  color: var(--primary-gold);
   transform: translateY(-2px);
 }
 
@@ -138,33 +141,37 @@ button {
   font-weight: 600;
   font-family: inherit;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   min-height: 36px;
 }
 
 button.btn-primary {
-  background-color: var(--primary-red);
-  color: var(--secondary-gold);
-  font-weight: 700;
-  border: 1px solid var(--secondary-gold);
+  background: linear-gradient(135deg, var(--accent-red), var(--highlight-red));
+  color: var(--dark-text-primary);
+  font-weight: 600;
+  border: 1px solid var(--border-red);
 }
 
 button.btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-medium);
-  background-color: var(--tertiary-crimson);
+  box-shadow: var(--shadow-gold);
+  background: var(--primary-gold);
+  color: #0A0A0A;
+  border-color: var(--primary-gold);
 }
 
 button.btn-outline {
   background-color: transparent;
-  border: 2px solid var(--secondary-gold);
-  color: var(--secondary-gold);
+  border: 2px solid var(--accent-red);
+  color: var(--dark-text-primary);
 }
 
 button.btn-outline:hover {
-  background-color: var(--primary-red);
-  color: var(--secondary-gold);
+  background-color: var(--primary-gold);
+  color: #0A0A0A;
+  border-color: var(--primary-gold);
   transform: translateY(-2px);
+  box-shadow: var(--shadow-gold);
 }
 
 button.btn-icon {
@@ -190,19 +197,19 @@ button:disabled {
 
 button:focus,
 button:focus-visible {
-  outline: 2px solid var(--secondary-gold);
+  outline: 2px solid var(--primary-gold);
   outline-offset: 2px;
 }
 
 /* Input Styles */
 input, select, textarea {
   border-radius: var(--border-radius-input);
-  border: 2px solid #2A2A2A;
+  border: 1px solid var(--border-red);
   padding: 12px 16px;
   font-size: 1em;
   font-family: inherit;
   width: 100%;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   background-color: var(--dark-card);
   color: var(--dark-text-primary);
 }
@@ -217,8 +224,13 @@ input, select, textarea {
 
 input:focus, select:focus, textarea:focus {
   outline: none;
-  border-color: var(--secondary-gold);
-  box-shadow: 0 0 0 3px rgba(201, 169, 97, 0.2);
+  border-color: var(--primary-gold);
+  background-color: var(--dark-surface);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+}
+
+input:hover, select:hover, textarea:hover {
+  border-color: var(--highlight-red);
 }
 
 /* Card Styles */
@@ -226,8 +238,9 @@ input:focus, select:focus, textarea:focus {
   background-color: var(--dark-card);
   border-radius: var(--border-radius-container);
   padding: var(--gutter);
-  box-shadow: var(--shadow-heavy);
-  transition: all 0.3s ease;
+  box-shadow: var(--shadow-light);
+  border: 1px solid var(--border-red);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 :root.light-mode .card {
@@ -236,7 +249,10 @@ input:focus, select:focus, textarea:focus {
 }
 
 .card:hover {
-  box-shadow: var(--shadow-medium);
+  background-color: var(--dark-card-hover);
+  border-color: var(--primary-gold);
+  box-shadow: var(--shadow-gold);
+  transform: translateY(-2px);
 }
 
 /* Container */
