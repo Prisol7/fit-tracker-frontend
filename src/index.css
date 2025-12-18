@@ -39,11 +39,11 @@
   --mobile-max-width: 400px;
   --gutter: 20px;
 
-  /* Spacing */
-  --border-radius-container: 20px;
-  --border-radius-element: 15px;
-  --border-radius-button: 30px;
-  --border-radius-input: 10px;
+  /* Spacing - Sharp Angular Design */
+  --border-radius-container: 4px;
+  --border-radius-element: 4px;
+  --border-radius-button: 4px;
+  --border-radius-input: 4px;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -177,7 +177,7 @@ button.btn-outline:hover {
 button.btn-icon {
   width: 36px;
   height: 36px;
-  border-radius: 50%;
+  border-radius: 4px;
   padding: 0;
   display: flex;
   align-items: center;

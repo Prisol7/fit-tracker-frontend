@@ -5,6 +5,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Workouts from './pages/Workouts';
+import WorkoutPlans from './pages/WorkoutPlans';
 import FoodTracker from './pages/FoodTracker';
 import Statistics from './pages/Statistics';
 import './App.css';
@@ -28,6 +29,9 @@ const Navigation = () => {
           <div className="nav-links">
             <Link to="/workouts">
               <i className="fas fa-dumbbell"></i> Workouts
+            </Link>
+            <Link to="/workout-plans">
+              <i className="fas fa-clipboard-list"></i> Plans
             </Link>
             <Link to="/food-tracker">
               <i className="fas fa-utensils"></i> Food
@@ -104,6 +108,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Workouts />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/workout-plans"
+              element={
+                <ProtectedRoute>
+                  <WorkoutPlans />
                 </ProtectedRoute>
               }
             />
