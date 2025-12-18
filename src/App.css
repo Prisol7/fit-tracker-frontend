@@ -174,3 +174,14 @@
     padding: 16px;
   }
 }
+
+/* Tab Navigation Responsive */
+.tab-label {
+  display: inline;
+}
+
+@media (max-width: 600px) {
+  .tab-label {
+    display: none;
+  }
+}

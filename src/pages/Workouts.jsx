@@ -3,7 +3,7 @@ import { addWorkout, getWorkouts, updateWorkout, deleteWorkout, getWorkoutPlans,
 
 const Workouts = () => {
   // Tab state
-  const [activeTab, setActiveTab] = useState('plan'); // 'today' | 'plan' | 'history'
+  const [activeTab, setActiveTab] = useState('today'); // 'today' | 'plan' | 'history'
 
   // Existing workout state
   const [formData, setFormData] = useState({
@@ -256,6 +256,14 @@ const Workouts = () => {
     setMessage('');
   };
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
   const muscleIcons = {
     'Chest': 'fa-heart',
     'Back': 'fa-shield-alt',
@@ -300,7 +308,9 @@ const Workouts = () => {
         gap: '8px',
         marginBottom: '24px',
         borderBottom: '2px solid var(--border-red)',
-        paddingBottom: '8px'
+        paddingBottom: '8px',
+        overflowX: 'auto',
+        WebkitOverflowScrolling: 'touch'
       }}>
         {[
           { id: 'today', label: "Today's Workouts", icon: 'fa-calendar-day' },
@@ -311,8 +321,9 @@ const Workouts = () => {
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             style={{
-              flex: 1,
-              padding: '12px 8px',
+              flex: '1 1 auto',
+              minWidth: '100px',
+              padding: '12px 16px',
               border: 'none',
               backgroundColor: activeTab === tab.id ? 'var(--accent-red)' : 'transparent',
               color: activeTab === tab.id ? 'var(--primary-gold)' : 'var(--dark-text-secondary)',
@@ -320,11 +331,16 @@ const Workouts = () => {
               cursor: 'pointer',
               transition: 'all 0.3s',
               fontWeight: activeTab === tab.id ? 600 : 400,
-              fontSize: '0.95em'
+              fontSize: '0.9em',
+              whiteSpace: 'nowrap',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '6px'
             }}
           >
             <i className={`fas ${tab.icon}`}></i>
-            <span style={{ marginLeft: '8px', display: window.innerWidth > 480 ? 'inline' : 'none' }}>
+            <span className="tab-label">
               {tab.label}
             </span>
           </button>
@@ -353,18 +369,145 @@ const Workouts = () => {
             <i className="fas fa-calendar-day" style={{ color: 'var(--primary-gold)' }}></i> Today's Workouts
           </h2>
 
+          {/* Add Workout Form */}
+          {showForm && (
+            <div className="card" style={{ marginBottom: '32px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+                <h2 style={{ margin: 0 }}>
+                  <i className={`fas ${editingId ? 'fa-edit' : 'fa-plus-circle'}`} style={{ color: 'var(--secondary-gold)', marginRight: '8px' }}></i>
+                  {editingId ? 'Edit Workout' : 'Add Custom Exercise'}
+                </h2>
+                <button
+                  onClick={handleCancelEdit}
+                  className="btn-secondary"
+                  style={{ padding: '8px 16px' }}
+                >
+                  Cancel
+                </button>
+              </div>
+
+              <form onSubmit={handleSubmit}>
+                <div style={{ display: 'grid', gap: '16px' }}>
+                  <div>
+                    <label htmlFor="exerciseName" style={{ display: 'block', marginBottom: '8px', fontWeight: 600 }}>
+                      Exercise Name
+                    </label>
+                    <input
+                      type="text"
+                      id="exerciseName"
+                      name="exerciseName"
+                      value={formData.exerciseName}
+                      onChange={handleInputChange}
+                      required
+                      className="input"
+                      placeholder="e.g., Bench Press"
+                      autoComplete="off"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="muscle" style={{ display: 'block', marginBottom: '8px', fontWeight: 600 }}>
+                      Muscle Group
+                    </label>
+                    <select
+                      id="muscle"
+                      name="muscle"
+                      value={formData.muscle}
+                      onChange={handleInputChange}
+                      required
+                      className="input"
+                    >
+                      <option value="">Select muscle group</option>
+                      <option value="Chest">Chest</option>
+                      <option value="Back">Back</option>
+                      <option value="Legs">Legs</option>
+                      <option value="Shoulders">Shoulders</option>
+                      <option value="Arms">Arms</option>
+                      <option value="Core">Core</option>
+                    </select>
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
+                    <div>
+                      <label htmlFor="weight" style={{ display: 'block', marginBottom: '8px', fontWeight: 600 }}>
+                        Weight (lbs)
+                      </label>
+                      <input
+                        type="number"
+                        id="weight"
+                        name="weight"
+                        value={formData.weight}
+                        onChange={handleInputChange}
+                        required
+                        min="0"
+                        step="0.1"
+                        className="input"
+                        placeholder="0"
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="reps" style={{ display: 'block', marginBottom: '8px', fontWeight: 600 }}>
+                        Reps
+                      </label>
+                      <input
+                        type="number"
+                        id="reps"
+                        name="reps"
+                        value={formData.reps}
+                        onChange={handleInputChange}
+                        required
+                        min="1"
+                        className="input"
+                        placeholder="0"
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="sets" style={{ display: 'block', marginBottom: '8px', fontWeight: 600 }}>
+                        Sets
+                      </label>
+                      <input
+                        type="number"
+                        id="sets"
+                        name="sets"
+                        value={formData.sets}
+                        onChange={handleInputChange}
+                        required
+                        min="1"
+                        className="input"
+                        placeholder="0"
+                      />
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="btn-primary"
+                    style={{ width: '100%', padding: '14px', fontSize: '1.05em' }}
+                  >
+                    {isLoading ? 'Saving...' : editingId ? 'Update Workout' : 'Add Workout'}
+                  </button>
+                </div>
+              </form>
+            </div>
+          )}
+
           {/* Today's summary */}
-          <div className="card" style={{ marginBottom: '24px', padding: '20px', textAlign: 'center' }}>
-            <div style={{ fontSize: '2.5em', fontWeight: 700, color: 'var(--primary-gold)' }}>
-              {todaysWorkouts.length}
+          {!showForm && (
+            <div className="card" style={{ marginBottom: '24px', padding: '20px', textAlign: 'center' }}>
+              <div style={{ fontSize: '2.5em', fontWeight: 700, color: 'var(--primary-gold)' }}>
+                {todaysWorkouts.length}
+              </div>
+              <div style={{ fontSize: '1.1em', color: 'var(--dark-text-secondary)' }}>
+                Exercise{todaysWorkouts.length !== 1 ? 's' : ''} Completed Today
+              </div>
             </div>
-            <div style={{ fontSize: '1.1em', color: 'var(--dark-text-secondary)' }}>
-              Exercise{todaysWorkouts.length !== 1 ? 's' : ''} Completed Today
-            </div>
-          </div>
+          )}
 
           {/* Today's workouts list */}
-          {todaysWorkouts.length === 0 ? (
+          {!showForm && (todaysWorkouts.length === 0 ? (
             <div className="card" style={{ textAlign: 'center', padding: '40px' }}>
               <i className="fas fa-calendar-day" style={{ fontSize: '3em', color: 'var(--dark-text-secondary)', opacity: 0.3 }}></i>
               <p style={{ marginTop: '16px', fontSize: '1.1em' }}>No workouts yet today</p>
@@ -406,9 +549,25 @@ const Workouts = () => {
                         </span>
                       </div>
                     </div>
-                    <span style={{ fontSize: '0.85em', color: 'var(--dark-text-secondary)' }}>
-                      <i className="fas fa-clock"></i> {new Date(workout.createdAt).toLocaleTimeString()}
-                    </span>
+                    <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                      <span style={{ fontSize: '0.85em', color: 'var(--dark-text-secondary)', marginRight: '8px' }}>
+                        <i className="fas fa-clock"></i> {new Date(workout.createdAt).toLocaleTimeString()}
+                      </span>
+                      <button
+                        onClick={() => handleEdit(workout)}
+                        className="btn-secondary"
+                        style={{ padding: '6px 12px', fontSize: '0.9em' }}
+                      >
+                        <i className="fas fa-edit"></i>
+                      </button>
+                      <button
+                        onClick={() => handleDelete(workout.id, workout.exerciseName)}
+                        className="btn-danger"
+                        style={{ padding: '6px 12px', fontSize: '0.9em' }}
+                      >
+                        <i className="fas fa-trash"></i>
+                      </button>
+                    </div>
                   </div>
 
                   <div style={{
@@ -451,7 +610,7 @@ const Workouts = () => {
                 </div>
               ))}
             </div>
-          )}
+          ))}
         </div>
       )}
 

@@ -507,7 +507,11 @@ const WorkoutPlans = () => {
           boxShadow: 'var(--shadow-heavy)',
           zIndex: 50,
           transform: showForm ? 'rotate(45deg)' : 'rotate(0deg)',
-          transition: 'all 0.3s'
+          transition: 'all 0.3s',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 0
         }}
       >
         <i className="fas fa-plus"></i>
