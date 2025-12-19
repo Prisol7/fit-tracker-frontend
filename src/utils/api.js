@@ -3,8 +3,8 @@ import { auth } from '../firebase';
 // API Configuration - Toggle between local and production
 // Comment out one of these lines to switch environments:
 
-const API_BASE_URL = 'http://localhost:3000/api';  // LOCAL DEVELOPMENT
-//const API_BASE_URL = 'https://fitness-server-e2b1d5e67f36.herokuapp.com/api';  // PRODUCTION
+//const API_BASE_URL = 'http://localhost:3000/api';  // LOCAL DEVELOPMENT
+const API_BASE_URL = 'https://fitness-server-e2b1d5e67f36.herokuapp.com/api';  // PRODUCTION
 
 // Get the current user's Firebase token
 const getAuthToken = async () => {
