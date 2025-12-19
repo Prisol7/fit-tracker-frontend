@@ -21,36 +21,27 @@ const Navigation = () => {
       {/* Top Navigation */}
       <nav className="top-nav">
         <div className="logo">
-          <i className="fas fa-dumbbell"></i>
           Fit Tracker
         </div>
 
         {currentUser && (
           <div className="nav-links">
-            <Link to="/workouts">
-              <i className="fas fa-dumbbell"></i> Workouts
-            </Link>
-            <Link to="/workout-plans">
-              <i className="fas fa-clipboard-list"></i> Plans
-            </Link>
-            <Link to="/food-tracker">
-              <i className="fas fa-utensils"></i> Food
-            </Link>
-            <Link to="/statistics">
-              <i className="fas fa-chart-line"></i> Stats
-            </Link>
+            <Link to="/workouts">Workouts</Link>
+            <Link to="/workout-plans">Plans</Link>
+            <Link to="/food-tracker">Food</Link>
+            <Link to="/statistics">Stats</Link>
           </div>
         )}
 
         <div className="auth-buttons">
           {currentUser ? (
-            <button onClick={logout} className="btn-outline">
-              <i className="fas fa-sign-out-alt"></i> Logout
+            <button onClick={logout} className="btn-secondary">
+              Logout
             </button>
           ) : (
             <Link to="/login">
               <button className="btn-primary">
-                <i className="fas fa-sign-in-alt"></i> Login
+                Login
               </button>
             </Link>
           )}
@@ -61,31 +52,27 @@ const Navigation = () => {
       {currentUser && (
         <nav className="bottom-nav">
           <Link
-            to="/"
-            className={`bottom-nav-item ${isActive('/') ? 'active' : ''}`}
+            to="/workout-plans"
+            className={`bottom-nav-item ${isActive('/workout-plans') ? 'active' : ''}`}
           >
-            <i className="fas fa-home"></i>
-            <span>Home</span>
+            <span>Plans</span>
           </Link>
           <Link
             to="/workouts"
             className={`bottom-nav-item ${isActive('/workouts') ? 'active' : ''}`}
           >
-            <i className="fas fa-dumbbell"></i>
             <span>Workouts</span>
           </Link>
           <Link
             to="/food-tracker"
             className={`bottom-nav-item ${isActive('/food-tracker') ? 'active' : ''}`}
           >
-            <i className="fas fa-utensils"></i>
             <span>Food</span>
           </Link>
           <Link
             to="/statistics"
             className={`bottom-nav-item ${isActive('/statistics') ? 'active' : ''}`}
           >
-            <i className="fas fa-chart-line"></i>
             <span>Stats</span>
           </Link>
         </nav>

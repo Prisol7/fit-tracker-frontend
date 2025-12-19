@@ -295,7 +295,7 @@ const Workouts = () => {
       {/* Page Header */}
       <div style={{ textAlign: 'center', marginBottom: '24px', marginTop: '20px' }}>
         <h1 style={{ marginBottom: '12px' }}>
-          <i className="fas fa-dumbbell" style={{ color: 'var(--primary-red)' }}></i> Workouts
+          Workouts
         </h1>
         <p style={{ fontSize: '1.1em' }}>
           Track your exercises and build strength
@@ -313,9 +313,9 @@ const Workouts = () => {
         WebkitOverflowScrolling: 'touch'
       }}>
         {[
-          { id: 'today', label: "Today's Workouts", icon: 'fa-calendar-day' },
-          { id: 'plan', label: 'Workout Plan', icon: 'fa-list-check' },
-          { id: 'history', label: 'History', icon: 'fa-history' }
+          { id: 'today', label: "Today's Workouts" },
+          { id: 'plan', label: 'Workout Plan' },
+          { id: 'history', label: 'History' }
         ].map(tab => (
           <button
             key={tab.id}
@@ -325,21 +325,20 @@ const Workouts = () => {
               minWidth: '100px',
               padding: '12px 16px',
               border: 'none',
-              backgroundColor: activeTab === tab.id ? 'var(--accent-red)' : 'transparent',
-              color: activeTab === tab.id ? 'var(--primary-gold)' : 'var(--dark-text-secondary)',
-              borderRadius: '4px',
+              backgroundColor: activeTab === tab.id ? 'var(--md-primary-container)' : 'transparent',
+              color: activeTab === tab.id ? 'var(--md-on-primary-container)' : 'var(--md-on-surface-variant)',
+              borderRadius: 'var(--md-shape-corner-full)',
               cursor: 'pointer',
-              transition: 'all 0.3s',
-              fontWeight: activeTab === tab.id ? 600 : 400,
+              transition: 'all 0.2s',
+              fontWeight: activeTab === tab.id ? 600 : 500,
               fontSize: '0.9em',
               whiteSpace: 'nowrap',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '6px'
+              letterSpacing: '0.1px'
             }}
           >
-            <i className={`fas ${tab.icon}`}></i>
             <span className="tab-label">
               {tab.label}
             </span>
@@ -366,7 +365,7 @@ const Workouts = () => {
       {activeTab === 'today' && (
         <div>
           <h2 style={{ marginBottom: '16px' }}>
-            <i className="fas fa-calendar-day" style={{ color: 'var(--primary-gold)' }}></i> Today's Workouts
+            Today's Workouts
           </h2>
 
           {/* Add Workout Form */}
@@ -374,7 +373,6 @@ const Workouts = () => {
             <div className="card" style={{ marginBottom: '32px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
                 <h2 style={{ margin: 0 }}>
-                  <i className={`fas ${editingId ? 'fa-edit' : 'fa-plus-circle'}`} style={{ color: 'var(--secondary-gold)', marginRight: '8px' }}></i>
                   {editingId ? 'Edit Workout' : 'Add Custom Exercise'}
                 </h2>
                 <button
@@ -387,10 +385,17 @@ const Workouts = () => {
               </div>
 
               <form onSubmit={handleSubmit}>
-                <div style={{ display: 'grid', gap: '16px' }}>
+                <div style={{ display: 'grid', gap: '20px' }}>
                   <div>
-                    <label htmlFor="exerciseName" style={{ display: 'block', marginBottom: '8px', fontWeight: 600 }}>
-                      Exercise Name
+                    <label htmlFor="exerciseName" style={{
+                      display: 'block',
+                      marginBottom: '8px',
+                      fontWeight: 500,
+                      fontSize: '14px',
+                      color: 'var(--md-on-surface)',
+                      letterSpacing: '0.1px'
+                    }}>
+                      Exercise Name *
                     </label>
                     <input
                       type="text"
@@ -400,14 +405,25 @@ const Workouts = () => {
                       onChange={handleInputChange}
                       required
                       className="input"
-                      placeholder="e.g., Bench Press"
+                      placeholder="Enter exercise name (e.g., Bench Press)"
                       autoComplete="off"
+                      style={{
+                        fontSize: '16px',
+                        padding: '14px 16px'
+                      }}
                     />
                   </div>
 
                   <div>
-                    <label htmlFor="muscle" style={{ display: 'block', marginBottom: '8px', fontWeight: 600 }}>
-                      Muscle Group
+                    <label htmlFor="muscle" style={{
+                      display: 'block',
+                      marginBottom: '8px',
+                      fontWeight: 500,
+                      fontSize: '14px',
+                      color: 'var(--md-on-surface)',
+                      letterSpacing: '0.1px'
+                    }}>
+                      Muscle Group *
                     </label>
                     <select
                       id="muscle"
@@ -416,8 +432,13 @@ const Workouts = () => {
                       onChange={handleInputChange}
                       required
                       className="input"
+                      style={{
+                        fontSize: '16px',
+                        padding: '14px 16px',
+                        cursor: 'pointer'
+                      }}
                     >
-                      <option value="">Select muscle group</option>
+                      <option value="">— Select a muscle group —</option>
                       <option value="Chest">Chest</option>
                       <option value="Back">Back</option>
                       <option value="Legs">Legs</option>
@@ -427,28 +448,62 @@ const Workouts = () => {
                     </select>
                   </div>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
+                  <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
+                    gap: '16px'
+                  }}>
                     <div>
-                      <label htmlFor="weight" style={{ display: 'block', marginBottom: '8px', fontWeight: 600 }}>
-                        Weight (lbs)
+                      <label htmlFor="weight" style={{
+                        display: 'block',
+                        marginBottom: '8px',
+                        fontWeight: 500,
+                        fontSize: '14px',
+                        color: 'var(--md-on-surface)',
+                        letterSpacing: '0.1px'
+                      }}>
+                        Weight *
                       </label>
-                      <input
-                        type="number"
-                        id="weight"
-                        name="weight"
-                        value={formData.weight}
-                        onChange={handleInputChange}
-                        required
-                        min="0"
-                        step="0.1"
-                        className="input"
-                        placeholder="0"
-                      />
+                      <div style={{ position: 'relative' }}>
+                        <input
+                          type="number"
+                          id="weight"
+                          name="weight"
+                          value={formData.weight}
+                          onChange={handleInputChange}
+                          required
+                          min="0"
+                          step="0.1"
+                          className="input"
+                          placeholder="145"
+                          style={{
+                            fontSize: '16px',
+                            padding: '14px 16px',
+                            paddingRight: '45px'
+                          }}
+                        />
+                        <span style={{
+                          position: 'absolute',
+                          right: '16px',
+                          top: '50%',
+                          transform: 'translateY(-50%)',
+                          color: 'var(--md-on-surface-variant)',
+                          fontSize: '14px',
+                          pointerEvents: 'none'
+                        }}>lbs</span>
+                      </div>
                     </div>
 
                     <div>
-                      <label htmlFor="reps" style={{ display: 'block', marginBottom: '8px', fontWeight: 600 }}>
-                        Reps
+                      <label htmlFor="reps" style={{
+                        display: 'block',
+                        marginBottom: '8px',
+                        fontWeight: 500,
+                        fontSize: '14px',
+                        color: 'var(--md-on-surface)',
+                        letterSpacing: '0.1px'
+                      }}>
+                        Reps *
                       </label>
                       <input
                         type="number"
@@ -459,13 +514,24 @@ const Workouts = () => {
                         required
                         min="1"
                         className="input"
-                        placeholder="0"
+                        placeholder="8"
+                        style={{
+                          fontSize: '16px',
+                          padding: '14px 16px'
+                        }}
                       />
                     </div>
 
                     <div>
-                      <label htmlFor="sets" style={{ display: 'block', marginBottom: '8px', fontWeight: 600 }}>
-                        Sets
+                      <label htmlFor="sets" style={{
+                        display: 'block',
+                        marginBottom: '8px',
+                        fontWeight: 500,
+                        fontSize: '14px',
+                        color: 'var(--md-on-surface)',
+                        letterSpacing: '0.1px'
+                      }}>
+                        Sets *
                       </label>
                       <input
                         type="number"
@@ -476,7 +542,11 @@ const Workouts = () => {
                         required
                         min="1"
                         className="input"
-                        placeholder="0"
+                        placeholder="3"
+                        style={{
+                          fontSize: '16px',
+                          padding: '14px 16px'
+                        }}
                       />
                     </div>
                   </div>
@@ -485,7 +555,13 @@ const Workouts = () => {
                     type="submit"
                     disabled={isLoading}
                     className="btn-primary"
-                    style={{ width: '100%', padding: '14px', fontSize: '1.05em' }}
+                    style={{
+                      width: '100%',
+                      padding: '16px',
+                      fontSize: '16px',
+                      fontWeight: 600,
+                      marginTop: '8px'
+                    }}
                   >
                     {isLoading ? 'Saving...' : editingId ? 'Update Workout' : 'Add Workout'}
                   </button>
@@ -509,9 +585,8 @@ const Workouts = () => {
           {/* Today's workouts list */}
           {!showForm && (todaysWorkouts.length === 0 ? (
             <div className="card" style={{ textAlign: 'center', padding: '40px' }}>
-              <i className="fas fa-calendar-day" style={{ fontSize: '3em', color: 'var(--dark-text-secondary)', opacity: 0.3 }}></i>
-              <p style={{ marginTop: '16px', fontSize: '1.1em' }}>No workouts yet today</p>
-              <p style={{ color: 'var(--dark-text-secondary)' }}>Switch to "Workout Plan" tab or add a manual workout!</p>
+              <p style={{ marginTop: '16px', fontSize: '1.1em', color: 'var(--md-on-surface)' }}>No workouts yet today</p>
+              <p style={{ color: 'var(--md-on-surface-variant)', marginTop: '8px' }}>Switch to "Workout Plan" tab or add a manual workout!</p>
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -550,8 +625,8 @@ const Workouts = () => {
                       </div>
                     </div>
                     <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                      <span style={{ fontSize: '0.85em', color: 'var(--dark-text-secondary)', marginRight: '8px' }}>
-                        <i className="fas fa-clock"></i> {new Date(workout.createdAt).toLocaleTimeString()}
+                      <span style={{ fontSize: '0.85em', color: 'var(--md-on-surface-variant)', marginRight: '8px' }}>
+                        {new Date(workout.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </span>
                       <button
                         onClick={() => handleEdit(workout)}
@@ -579,32 +654,32 @@ const Workouts = () => {
                     <div style={{
                       textAlign: 'center',
                       padding: '12px',
-                      backgroundColor: 'var(--dark-surface)',
-                      borderRadius: 'var(--border-radius-element)'
+                      backgroundColor: 'var(--md-surface-container-high)',
+                      borderRadius: 'var(--md-shape-corner-small)'
                     }}>
-                      <i className="fas fa-weight-hanging" style={{ color: 'var(--primary-red)', marginBottom: '4px' }}></i>
-                      <div style={{ fontSize: '1.3em', fontWeight: '700', margin: '4px 0' }}>{workout.weight}</div>
-                      <div style={{ fontSize: '0.85em', color: 'var(--dark-text-secondary)' }}>lbs</div>
+                      <div style={{ fontSize: '0.75em', color: 'var(--md-on-surface-variant)', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Weight</div>
+                      <div style={{ fontSize: '1.5em', fontWeight: '600', margin: '4px 0', color: 'var(--md-on-surface)' }}>{workout.weight}</div>
+                      <div style={{ fontSize: '0.85em', color: 'var(--md-on-surface-variant)' }}>lbs</div>
                     </div>
                     <div style={{
                       textAlign: 'center',
                       padding: '12px',
-                      backgroundColor: 'var(--dark-surface)',
-                      borderRadius: 'var(--border-radius-element)'
+                      backgroundColor: 'var(--md-surface-container-high)',
+                      borderRadius: 'var(--md-shape-corner-small)'
                     }}>
-                      <i className="fas fa-redo" style={{ color: 'var(--secondary-gold)', marginBottom: '4px' }}></i>
-                      <div style={{ fontSize: '1.3em', fontWeight: '700', margin: '4px 0' }}>{workout.sets} × {workout.reps}</div>
-                      <div style={{ fontSize: '0.85em', color: 'var(--dark-text-secondary)' }}>sets × reps</div>
+                      <div style={{ fontSize: '0.75em', color: 'var(--md-on-surface-variant)', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Sets × Reps</div>
+                      <div style={{ fontSize: '1.5em', fontWeight: '600', margin: '4px 0', color: 'var(--md-on-surface)' }}>{workout.sets} × {workout.reps}</div>
+                      <div style={{ fontSize: '0.85em', color: 'var(--md-on-surface-variant)' }}>per set</div>
                     </div>
                     <div style={{
                       textAlign: 'center',
                       padding: '12px',
-                      backgroundColor: 'var(--dark-surface)',
-                      borderRadius: 'var(--border-radius-element)'
+                      backgroundColor: 'var(--md-surface-container-high)',
+                      borderRadius: 'var(--md-shape-corner-small)'
                     }}>
-                      <i className="fas fa-calculator" style={{ color: 'var(--tertiary-crimson)', marginBottom: '4px' }}></i>
-                      <div style={{ fontSize: '1.3em', fontWeight: '700', margin: '4px 0' }}>{workout.weight * workout.sets * workout.reps}</div>
-                      <div style={{ fontSize: '0.85em', color: 'var(--dark-text-secondary)' }}>total lbs</div>
+                      <div style={{ fontSize: '0.75em', color: 'var(--md-on-surface-variant)', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Total</div>
+                      <div style={{ fontSize: '1.5em', fontWeight: '600', margin: '4px 0', color: 'var(--md-on-surface)' }}>{workout.weight * workout.sets * workout.reps}</div>
+                      <div style={{ fontSize: '0.85em', color: 'var(--md-on-surface-variant)' }}>lbs</div>
                     </div>
                   </div>
                 </div>
@@ -618,10 +693,10 @@ const Workouts = () => {
         <div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
             <h2 style={{ margin: 0 }}>
-              <i className="fas fa-list-check" style={{ color: 'var(--primary-gold)' }}></i> Workout Plan
+              Workout Plan
             </h2>
-            <div style={{ fontSize: '0.9em', color: 'var(--dark-text-secondary)' }}>
-              <i className="fas fa-calendar"></i> {new Date().toLocaleDateString('en-US', { weekday: 'long' })}
+            <div style={{ fontSize: '0.9em', color: 'var(--md-on-surface-variant)' }}>
+              {new Date().toLocaleDateString('en-US', { weekday: 'long' })}
             </div>
           </div>
 
@@ -631,10 +706,10 @@ const Workouts = () => {
               <div className="card" style={{ marginBottom: '24px', padding: '20px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div>
-                    <h3 style={{ margin: 0, color: 'var(--primary-gold)' }}>
-                      <i className="fas fa-clipboard-list"></i> {selectedPlan.planName}
+                    <h3 style={{ margin: 0, color: 'var(--md-primary)' }}>
+                      {selectedPlan.planName}
                     </h3>
-                    <p style={{ margin: '8px 0 0 0', fontSize: '0.9em', color: 'var(--dark-text-secondary)' }}>
+                    <p style={{ margin: '8px 0 0 0', fontSize: '0.9em', color: 'var(--md-on-surface-variant)' }}>
                       {selectedPlan.exercises.length} exercises • Check off as you complete them
                     </p>
                   </div>

@@ -1,49 +1,66 @@
-/* Minimalistic Dark Theme with Red Accents & Gold Highlights */
+/* Material Design 3 (Material You) Dark Theme */
 
 :root {
-  /* Primary Colors - Minimalistic Dark Theme */
-  --primary-gold: #D4AF37;        /* Rich Gold for hover/active */
-  --accent-red: #5C0A0A;          /* Dark Red accent */
-  --highlight-red: #8B1A1A;       /* Slightly brighter red */
-  --border-red: #3D0808;          /* Subtle dark red borders */
+  /* MD3 Dark Theme Color Palette - Custom Red (#A50021) */
+  --md-primary: #FFB3BA;              /* Light red/pink for dark mode */
+  --md-on-primary: #5F0011;           /* Dark red text on primary */
+  --md-primary-container: #A50021;    /* Your brand red */
+  --md-on-primary-container: #FFDAD9; /* Light text on container */
 
-  /* Dark Theme Colors - Pure Minimalism */
-  --dark-bg: #0A0A0A;             /* Deep dark background */
-  --dark-surface: #121212;        /* Slightly elevated surface */
-  --dark-card: #1A1A1A;           /* Card background */
-  --dark-card-hover: #202020;     /* Card hover state */
-  --dark-text-primary: #E5E5E5;   /* Clean white text */
-  --dark-text-secondary: #999999; /* Muted gray text */
-  --dark-text-tertiary: #666666;  /* Very subtle text */
+  --md-secondary: #E6BDBF;            /* Complementary warm tone */
+  --md-on-secondary: #43292B;         /* Dark text on secondary */
+  --md-secondary-container: #5C3F40;  /* Secondary container */
+  --md-on-secondary-container: #FFDAD9; /* Light text on secondary container */
 
-  /* Light Theme Colors */
-  --light-bg: #FFFFFF;
-  --light-surface: #F8F9FA;
-  --light-card: #FFFFFF;
-  --light-text-primary: #2C3E50;
-  --light-text-secondary: #6C757D;
+  --md-tertiary: #D4C4A8;             /* Warm beige tertiary */
+  --md-on-tertiary: #3A2F15;          /* Dark text on tertiary */
+  --md-tertiary-container: #51442A;   /* Tertiary container */
+  --md-on-tertiary-container: #F1E4C3; /* Light text on tertiary container */
 
-  /* Shadows - Subtle and minimal */
-  --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.3);
-  --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.4);
-  --shadow-heavy: 0 8px 24px rgba(0, 0, 0, 0.6);
-  --shadow-gold: 0 4px 20px rgba(212, 175, 55, 0.3);
+  --md-error: #FFB4AB;                /* Error light red */
+  --md-on-error: #690005;             /* Dark text on error */
+  --md-error-container: #93000A;      /* Error container */
+  --md-on-error-container: #FFDAD6;   /* Light text on error container */
 
-  /* Typography */
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  line-height: 1.6;
-  font-weight: 400;
+  --md-background: #1A1112;           /* Very dark red-tinted background */
+  --md-on-background: #EDE0DF;        /* Warm off-white text */
+  --md-surface: #1A1112;              /* Surface matches background */
+  --md-on-surface: #EDE0DF;           /* Text on surface */
+  --md-surface-variant: #524344;      /* Red-tinted surface variant */
+  --md-on-surface-variant: #D7C1C2;   /* Light text on surface variant */
+
+  --md-outline: #A08C8D;              /* Red-tinted outline */
+  --md-outline-variant: #524344;      /* Darker outline variant */
+
+  --md-surface-container-lowest: #140C0D;
+  --md-surface-container-low: #221415;
+  --md-surface-container: #261819;
+  --md-surface-container-high: #311D1E;
+  --md-surface-container-highest: #3C2829;
+
+  /* MD3 Elevation & Shadows */
+  --md-elevation-0: none;
+  --md-elevation-1: 0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+  --md-elevation-2: 0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 2px 6px 2px rgba(0, 0, 0, 0.15);
+  --md-elevation-3: 0px 4px 8px 3px rgba(0, 0, 0, 0.15), 0px 1px 3px 0px rgba(0, 0, 0, 0.3);
+  --md-elevation-4: 0px 6px 10px 4px rgba(0, 0, 0, 0.15), 0px 2px 3px 0px rgba(0, 0, 0, 0.3);
+  --md-elevation-5: 0px 8px 12px 6px rgba(0, 0, 0, 0.15), 0px 4px 4px 0px rgba(0, 0, 0, 0.3);
+
+  /* Professional Typography - Inter/SF Pro style */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+
+  /* MD3 Shape */
+  --md-shape-corner-none: 0px;
+  --md-shape-corner-extra-small: 4px;
+  --md-shape-corner-small: 8px;
+  --md-shape-corner-medium: 12px;
+  --md-shape-corner-large: 16px;
+  --md-shape-corner-extra-large: 28px;
+  --md-shape-corner-full: 9999px;
 
   /* Layout */
   --container-max-width: 1200px;
-  --mobile-max-width: 400px;
-  --gutter: 20px;
-
-  /* Spacing - Sharp Angular Design */
-  --border-radius-container: 4px;
-  --border-radius-element: 4px;
-  --border-radius-button: 4px;
-  --border-radius-input: 4px;
+  --gutter: 24px;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -51,18 +68,11 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Dark Theme (Default) */
+/* Base Styles */
 :root {
   color-scheme: dark;
-  color: var(--dark-text-primary);
-  background-color: var(--dark-bg);
-}
-
-/* Light Theme Override (future toggle) */
-:root.light-mode {
-  color-scheme: light;
-  color: var(--light-text-primary);
-  background-color: var(--light-bg);
+  color: var(--md-on-background);
+  background-color: var(--md-background);
 }
 
 * {
@@ -75,184 +85,282 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background-color: var(--dark-bg);
+  background-color: var(--md-background);
+  color: var(--md-on-background);
+  line-height: 1.5;
 }
 
-:root.light-mode body {
-  background-color: var(--light-surface);
-}
-
+/* MD3 Typography Scale */
 h1, h2, h3, h4, h5, h6 {
-  line-height: 1.2;
-  color: var(--dark-text-primary);
-}
-
-:root.light-mode h1,
-:root.light-mode h2,
-:root.light-mode h3,
-:root.light-mode h4,
-:root.light-mode h5,
-:root.light-mode h6 {
-  color: var(--light-text-primary);
+  color: var(--md-on-background);
+  font-weight: 400;
+  margin: 0;
 }
 
 h1 {
-  font-size: 2.5em;
-  font-weight: 700;
+  /* Display Large */
+  font-size: 57px;
+  line-height: 64px;
+  font-weight: 400;
+  letter-spacing: -0.25px;
 }
 
 h2 {
-  font-size: 2em;
-  font-weight: 600;
+  /* Headline Large */
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 400;
 }
 
 h3 {
-  font-size: 1.5em;
-  font-weight: 600;
+  /* Headline Medium */
+  font-size: 28px;
+  line-height: 36px;
+  font-weight: 400;
+}
+
+h4 {
+  /* Headline Small */
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 400;
+}
+
+h5 {
+  /* Title Large */
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 400;
+}
+
+h6 {
+  /* Title Medium */
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+  letter-spacing: 0.15px;
 }
 
 p {
-  color: var(--dark-text-secondary);
-  line-height: 1.6;
-}
-
-:root.light-mode p {
-  color: var(--light-text-secondary);
+  /* Body Large */
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.5px;
+  color: var(--md-on-surface-variant);
+  margin: 0;
 }
 
 a {
-  font-weight: 500;
-  color: var(--dark-text-primary);
+  color: var(--md-primary);
   text-decoration: none;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: color 0.2s cubic-bezier(0.2, 0, 0, 1);
 }
 
 a:hover {
-  color: var(--primary-gold);
-  transform: translateY(-2px);
+  color: var(--md-on-primary-container);
+  text-decoration: underline;
 }
 
-/* Button Styles */
+/* MD3 Button Styles */
 button {
-  border-radius: var(--border-radius-button);
+  border-radius: var(--md-shape-corner-full);
   border: none;
-  padding: 12px 24px;
-  font-size: 1em;
-  font-weight: 600;
+  padding: 10px 24px;
+  font-size: 14px;
+  font-weight: 500;
   font-family: inherit;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  min-height: 36px;
+  transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+  min-height: 40px;
+  letter-spacing: 0.1px;
+  text-transform: none;
 }
 
+/* Filled Button (Primary) */
 button.btn-primary {
-  background: linear-gradient(135deg, var(--accent-red), var(--highlight-red));
-  color: var(--dark-text-primary);
-  font-weight: 600;
-  border: 1px solid var(--border-red);
+  background-color: var(--md-primary);
+  color: var(--md-on-primary);
+  box-shadow: var(--md-elevation-0);
 }
 
 button.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-gold);
-  background: var(--primary-gold);
-  color: #0A0A0A;
-  border-color: var(--primary-gold);
+  box-shadow: var(--md-elevation-1);
+  background-color: color-mix(in srgb, var(--md-primary) 92%, white);
 }
 
-button.btn-outline {
+button.btn-primary:active {
+  box-shadow: var(--md-elevation-0);
+}
+
+button.btn-primary:focus-visible {
+  box-shadow: var(--md-elevation-0);
+  outline: 2px solid var(--md-primary);
+  outline-offset: 2px;
+}
+
+/* Outlined Button (Secondary) */
+button.btn-secondary {
   background-color: transparent;
-  border: 2px solid var(--accent-red);
-  color: var(--dark-text-primary);
+  color: var(--md-primary);
+  border: 1px solid var(--md-outline);
+  box-shadow: none;
 }
 
-button.btn-outline:hover {
-  background-color: var(--primary-gold);
-  color: #0A0A0A;
-  border-color: var(--primary-gold);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-gold);
+button.btn-secondary:hover {
+  background-color: color-mix(in srgb, var(--md-primary) 8%, transparent);
+  border-color: var(--md-outline);
 }
 
+button.btn-secondary:active {
+  background-color: color-mix(in srgb, var(--md-primary) 12%, transparent);
+}
+
+/* Text Button */
+button.btn-text {
+  background-color: transparent;
+  color: var(--md-primary);
+  box-shadow: none;
+  padding: 10px 12px;
+}
+
+button.btn-text:hover {
+  background-color: color-mix(in srgb, var(--md-primary) 8%, transparent);
+}
+
+/* Tonal Button */
+button.btn-tonal {
+  background-color: var(--md-secondary-container);
+  color: var(--md-on-secondary-container);
+  box-shadow: var(--md-elevation-0);
+}
+
+button.btn-tonal:hover {
+  box-shadow: var(--md-elevation-1);
+  background-color: color-mix(in srgb, var(--md-secondary-container) 92%, white);
+}
+
+/* Danger/Error Button */
+button.btn-danger {
+  background-color: var(--md-error);
+  color: var(--md-on-error);
+  box-shadow: var(--md-elevation-0);
+}
+
+button.btn-danger:hover {
+  box-shadow: var(--md-elevation-1);
+  background-color: color-mix(in srgb, var(--md-error) 92%, white);
+}
+
+/* Icon Button */
 button.btn-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 4px;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--md-shape-corner-full);
   padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--dark-surface);
+  background-color: transparent;
+  color: var(--md-on-surface-variant);
 }
 
-:root.light-mode button.btn-icon {
-  background-color: var(--light-surface);
+button.btn-icon:hover {
+  background-color: color-mix(in srgb, var(--md-on-surface) 8%, transparent);
 }
 
 button:disabled {
-  opacity: 0.6;
+  opacity: 0.38;
   cursor: not-allowed;
-  transform: none !important;
+  box-shadow: none;
 }
 
-button:focus,
 button:focus-visible {
-  outline: 2px solid var(--primary-gold);
+  outline: 2px solid var(--md-primary);
   outline-offset: 2px;
 }
 
-/* Input Styles */
+/* MD3 Input Styles (Filled Text Fields) */
 input, select, textarea {
-  border-radius: var(--border-radius-input);
-  border: 1px solid var(--border-red);
-  padding: 12px 16px;
-  font-size: 1em;
+  border-radius: var(--md-shape-corner-extra-small) var(--md-shape-corner-extra-small) 0 0;
+  border: none;
+  border-bottom: 1px solid var(--md-on-surface-variant);
+  padding: 16px 16px 8px 16px;
+  font-size: 16px;
   font-family: inherit;
   width: 100%;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  background-color: var(--dark-card);
-  color: var(--dark-text-primary);
+  transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+  background-color: var(--md-surface-container-highest);
+  color: var(--md-on-surface);
+  line-height: 24px;
+  letter-spacing: 0.5px;
 }
 
-:root.light-mode input,
-:root.light-mode select,
-:root.light-mode textarea {
-  background-color: var(--light-card);
-  color: var(--light-text-primary);
-  border-color: #E0E0E0;
+input.input,
+select.input,
+textarea.input {
+  background-color: var(--md-surface-container-highest);
+  border-bottom: 1px solid var(--md-on-surface-variant);
 }
 
-input:focus, select:focus, textarea:focus {
+input:hover,
+select:hover,
+textarea:hover {
+  background-color: color-mix(in srgb, var(--md-on-surface) 8%, var(--md-surface-container-highest));
+  border-bottom-color: var(--md-on-surface);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
   outline: none;
-  border-color: var(--primary-gold);
-  background-color: var(--dark-surface);
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+  border-bottom: 2px solid var(--md-primary);
+  background-color: color-mix(in srgb, var(--md-on-surface) 12%, var(--md-surface-container-highest));
+  padding-bottom: 7px;
 }
 
-input:hover, select:hover, textarea:hover {
-  border-color: var(--highlight-red);
+select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath fill='%23CAC4D0' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  padding-right: 40px;
 }
 
-/* Card Styles */
+/* MD3 Card Styles (Filled Cards) */
 .card {
-  background-color: var(--dark-card);
-  border-radius: var(--border-radius-container);
-  padding: var(--gutter);
-  box-shadow: var(--shadow-light);
-  border: 1px solid var(--border-red);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-:root.light-mode .card {
-  background-color: var(--light-card);
-  box-shadow: var(--shadow-light);
+  background-color: var(--md-surface-container-highest);
+  border-radius: var(--md-shape-corner-medium);
+  padding: 16px;
+  box-shadow: var(--md-elevation-0);
+  transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+  border: none;
 }
 
 .card:hover {
-  background-color: var(--dark-card-hover);
-  border-color: var(--primary-gold);
-  box-shadow: var(--shadow-gold);
-  transform: translateY(-2px);
+  box-shadow: var(--md-elevation-1);
+}
+
+/* Elevated Card */
+.card-elevated {
+  background-color: var(--md-surface-container-low);
+  box-shadow: var(--md-elevation-1);
+}
+
+.card-elevated:hover {
+  box-shadow: var(--md-elevation-2);
+}
+
+/* Outlined Card */
+.card-outlined {
+  background-color: transparent;
+  border: 1px solid var(--md-outline-variant);
+  box-shadow: none;
+}
+
+.card-outlined:hover {
+  box-shadow: none;
+  border-color: var(--md-outline);
 }
 
 /* Container */
@@ -262,24 +370,76 @@ input:hover, select:hover, textarea:hover {
   padding: var(--gutter);
 }
 
+/* Utility Classes */
+.surface {
+  background-color: var(--md-surface);
+  color: var(--md-on-surface);
+}
+
+.surface-variant {
+  background-color: var(--md-surface-variant);
+  color: var(--md-on-surface-variant);
+}
+
+.primary-container {
+  background-color: var(--md-primary-container);
+  color: var(--md-on-primary-container);
+}
+
+.secondary-container {
+  background-color: var(--md-secondary-container);
+  color: var(--md-on-secondary-container);
+}
+
+.tertiary-container {
+  background-color: var(--md-tertiary-container);
+  color: var(--md-on-tertiary-container);
+}
+
+.error-container {
+  background-color: var(--md-error-container);
+  color: var(--md-on-error-container);
+}
+
+/* Responsive Typography */
 @media (max-width: 768px) {
+  h1 {
+    font-size: 45px;
+    line-height: 52px;
+  }
+
+  h2 {
+    font-size: 28px;
+    line-height: 36px;
+  }
+
+  h3 {
+    font-size: 24px;
+    line-height: 32px;
+  }
+
   .container {
-    max-width: 100%;
     padding: 16px;
   }
 }
 
-/* Mobile-specific */
-@media (max-width: 768px) {
-  h1 {
-    font-size: 2em;
-  }
+/* MD3 Divider */
+.divider {
+  height: 1px;
+  background-color: var(--md-outline-variant);
+  border: none;
+  margin: 16px 0;
+}
 
-  h2 {
-    font-size: 1.5em;
-  }
-
-  h3 {
-    font-size: 1.25em;
-  }
+/* MD3 Badge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: var(--md-shape-corner-small);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  background-color: var(--md-secondary-container);
+  color: var(--md-on-secondary-container);
 }
